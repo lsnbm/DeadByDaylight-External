@@ -1,1 +1,3 @@
-# 黎明杀机-external
+# Dead by Daylight-external
+
+This is an external ESP for Dead by Daylight.
