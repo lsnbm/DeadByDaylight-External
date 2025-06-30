@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "ImGui Overlay\\x64\\Release\\Mem2.obj",
+            "outputs": [
+                "ImGui Overlay\\x64\\Release\\Mem2.h_1206D0EA24173F4.ifc.dt.module.json",
+                "ImGui Overlay\\x64\\Release\\Mem2.h_1206D0EA24173F4.ifc.dt.d.json",
+                "ImGui Overlay\\x64\\Release\\Mem2.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "C:\\Users\\liaoshuang\\Desktop\\external-overlay-main\\Mem2.h",
+                    "source-path": "c:\\users\\liaoshuang\\desktop\\external-overlay-main\\mem2.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}

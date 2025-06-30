@@ -1,0 +1,87 @@
+﻿  Vector.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_dx11.cpp
+  imgui_impl_win32.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  main.cpp
+  gui.cpp
+  overlay.cpp
+D:\visual studio 2022\VC\Tools\MSVC\14.44.35207\include\__msvc_ostream.hpp(697,9): warning C4530: 使用了 C++ 异常处理程序，但未启用展开语义。请指定 /EHsc
+  (编译源文件“example/main.cpp”)
+      D:\visual studio 2022\VC\Tools\MSVC\14.44.35207\include\__msvc_ostream.hpp(697,9):
+      模板实例化上下文(最早的实例化上下文)为
+          C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\Mem.h(37,15):
+          查看对正在编译的函数 模板 实例化“std::basic_ostream<wchar_t,std::char_traits<wchar_t>> &std::operator <<<wchar_t,std::char_traits<wchar_t>>(std::basic_ostream<wchar_t,std::char_traits<wchar_t>> &,const char *)”的引用
+  
+D:\visual studio 2022\VC\Tools\MSVC\14.44.35207\include\chrono(2359,9): warning C4530: 使用了 C++ 异常处理程序，但未启用展开语义。请指定 /EHsc
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(199,49): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(199,23): warning C4244: “初始化”: 从“double”转换到“const float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(200,45): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(200,21): warning C4244: “初始化”: 从“double”转换到“const float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(201,47): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(201,22): warning C4244: “初始化”: 从“double”转换到“const float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(232,31): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(232,21): warning C4244: “初始化”: 从“double”转换到“const float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(233,31): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(233,21): warning C4244: “初始化”: 从“double”转换到“const float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(234,31): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\ESP\GlobalOffsets.h(234,21): warning C4244: “初始化”: 从“double”转换到“const float”，可能丢失数据
+  (编译源文件“src/overlay.cpp”)
+  
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(493,35): warning C4018: “<”: 有符号/无符号不匹配
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(632,125): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(632,105): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(632,85): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(661,47): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(661,40): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(661,33): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(675,135): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(675,100): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(675,65): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(706,102): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(706,90): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(706,78): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(732,114): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(732,98): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(732,82): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(762,105): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(762,92): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(762,79): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(792,87): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(792,80): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(792,73): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(819,46): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(819,39): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\liaoshuang\Desktop\黎明杀机-external\src\overlay.cpp(819,32): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+  All 3359 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  ImGui Overlay.vcxproj -> C:\Users\liaoshuang\Desktop\黎明杀机-external\x64\Release\DeadByDaylight-Win64-Shiping.exe
