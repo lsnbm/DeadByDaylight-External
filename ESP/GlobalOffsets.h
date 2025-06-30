@@ -6,7 +6,7 @@
 #include <ostream>
 #include <imgui.h>
 
-// »ù´¡ÀàĞÍ±ğÃû
+// åŸºç¡€ç±»å‹åˆ«å
 typedef unsigned char uint8_t;
 typedef uint8_t      uint8;
 
@@ -16,74 +16,28 @@ extern int screenHeight;
 
 
 
-// Game.exe È«¾Ö±äÁ¿: GWorld µÄÆ«ÒÆ
+
 static constexpr int32_t OFFSET_GWorld = 0xAB956E0;
-// Game.exe È«¾Ö±äÁ¿: GName Ë÷Òı±íµÄÆ«ÒÆ
 static constexpr int32_t OFFSET_GNames = 0xA93D140;
-// Game.exe È«¾Ö±äÁ¿: GUObject ÁĞ±íµÄÆ«ÒÆ
 static constexpr int32_t OFFSET_GUObjects = 0xa9ff990;
-
-
-//ËùÓĞ¶ÔÏóÎ»ÖÃ»ñÈ¡
-
-// UWorld::Ulevel_PersistentLevel ³ÉÔ±Æ«ÒÆ
 static constexpr int32_t OFFSET_UWorld_ULevel_PersistentLevel = 0x0038;
-// ULevel::TArray<AActor*>_actor
 static constexpr int32_t OFFSET_ULevel_Actors = 0x00A0;
-// AActor::RootComponent ³ÉÔ±Æ«ÒÆ
 static constexpr int32_t OFFSET_AActor_USceneComponent_RootComponent = 0x01A8;
-
-// AActor::USceneComponent::RelativeLocation ³ÉÔ±Æ«ÒÆ
 static constexpr int32_t OFFSET_USceneComponent_RelativeLocation = 0x0150;
-
-
-
-//±¾µØÍæ¼ÒÏà»ú»ñÈ¡
-
-
-// UWorld::OwningGameInstance ³ÉÔ±Æ«ÒÆ
 static constexpr int32_t OFFSET_GWorld_OwningGameInstance = 0x01C8;
-// UGameInstance::LocalPlayers ³ÉÔ±Æ«ÒÆ (TArray<UPlayer*>)
 static constexpr int32_t OFFSET_OwningGameInstance_LocalPlayers = 0x0040;
-// ULocalPlayer::PlayerController ³ÉÔ±Æ«ÒÆ
 static constexpr int32_t OFFSET_LocalPlayer_PlayerController = 0x0038;
-
-// APlayerController::AcknowledgedPawn ³ÉÔ±Æ«ÒÆ
 static constexpr int32_t OFFSET_PlayerController_AcknowledgedPawn = 0x0350;
-// APlayerController::CameraManager ³ÉÔ±Æ«ÒÆ
 static constexpr int32_t OFFSET_PlayerController_CameraManager = 0x0360;
-// APlayerCameraManager::CameraCachePrivate ³ÉÔ±Æ«ÒÆ
 static constexpr int32_t OFFSET_CameraManager_CameraCachePrivate = 0x22D0;
-
-
-//·¿¼äÍæ¼Ò»ñÈ¡
-
-// UWorld::GameState ³ÉÔ±Æ«ÒÆ (AGameStateBase*)
 static constexpr int32_t OFFSET_GWorld_GameState = 0x0168;
-
-// AGameStateBase::PlayerArray ³ÉÔ±Æ«ÒÆ (TArray<APlayerState*>)
 static constexpr int32_t OFFSET_GameState_PlayerState = 0x02B8;
-
-// APlayerState::PlayerNamePrivate ³ÉÔ±Æ«ÒÆ (FString)
 static constexpr int32_t OFFSET_PlayerState_PlayerNamePrivate = 0x03A0;
-
-// APlayerState::PawnPrivate ³ÉÔ±Æ«ÒÆ (AActor*)
 static constexpr int32_t OFFSET_PlayerState_PawnPrivate = 0x0320;
-
-// DBDPlayerState::CamperData ³ÉÔ±Æ«ÒÆ (Ç¶ÈëÊ½ FCharacterStateData)
 static constexpr int32_t OFFSET_PlayerState_FCharacterStateData_CamperData = 0x0410;
-
-// DBDPlayerState::SlasherData ³ÉÔ±Æ«ÒÆ (Ç¶ÈëÊ½ FCharacterStateData)
 static constexpr int32_t OFFSET_PlayerState_FCharacterStateData_SlasherData = 0x0430;
-
-// DBDPlayerState::PlayerData ³ÉÔ±Æ«ÒÆ (Ç¶ÈëÊ½ FPlayerStateData)
 static constexpr int32_t OFFSET_PlayerState_FPlayerStateData_PlayerData = 0x0450;
-
-//Í¼ÌÚ×´Ì¬
-
-// ATotem¼Ì³ĞAactor
 static constexpr int32_t OFFSET_ATotem_ETotemState = 0x03F8;
-// AGenerator¼Ì³ĞAactor
 static constexpr int32_t OFFSET_AGenerator_UChargeableComponent = 0x0620;
 static constexpr int32_t OFFSET_AGenerator_UChargeableComponent_FSpeedBasedNetSyncedValue = 0x0198;
 static constexpr int32_t OFFSET_AGenerator_UChargeableComponent_FSpeedBasedNetSyncedValue_replicatedValue = 0x0018;
@@ -92,30 +46,30 @@ static constexpr int32_t OFFSET_AGenerator_UChargeableComponent_FSpeedBasedNetSy
 struct Perks {
 
 
-	uint64_t PerkNameData;// ±»¶¯¼¼ÄÜÃû³ÆÊı¾İÖ¸Õë
-	int32_t perkNameIdx;// ±»¶¯¼¼ÄÜË÷Òı
-	std::string perkName; // ±»¶¯¼¼ÄÜÃû³Æ
+	uint64_t PerkNameData;
+	int32_t perkNameIdx;
+	std::string perkName;
 
 };
 
 struct  Player {
 public:
-	uint64_t PlayerData;//Íæ¼ÒÖ¸Õë
-	std::string name;//Íæ¼ÒÃû³Æ
-	uint64_t  PerkStruct;// Perk½á¹¹Ìå
-	uint64_t EquipedPerkIds; // ×°±¸µÄ±»¶¯¼¼ÄÜIDÊı×éÖ¸Õë
-	int32_t  EquipedPerkIdsNum; // ×°±¸µÄ±»¶¯¼¼ÄÜIDÊıÁ¿
+	uint64_t PlayerData;
+	std::string name;
+	uint64_t  PerkStruct;
+	uint64_t EquipedPerkIds; 
+	int32_t  EquipedPerkIdsNum;
 
-	uint64_t Character;// Ö÷¶¯¼¼ÄÜÖ¸Õë
-	uint32_t powerId;// Ö÷¶¯¼¼ÄÜÃûË÷Òı
-	std::string powerName; // Ö÷¶¯¼¼ÄÜÃû³Æ
+	uint64_t Character;
+	uint32_t powerId;
+	std::string powerName;
 
-	ImU32 color;//Çø·ÖÉ±ÊÖºÍĞÒ´æÕßÑÕÉ«
+	ImU32 color;
 
-	std::vector<Perks> perks; // ±»¶¯¼¼ÄÜIDÊı×é
+	std::vector<Perks> perks;
 
 	uint64_t	PawnPrivate;
-	uint64_t	rootComponent;//¸ù×é¼ş
+	uint64_t	rootComponent;
 
 };
 
@@ -123,84 +77,81 @@ class Engine {
 
 public:
 
-	//ÊÀ½çËùÓĞ¶ÔÏó
+	
 	uint64_t pLevel;
 	uint64_t actors;
 	uint32_t Num;
 
-	//±¾µØÍæ¼ÒÏà»ú
+	
 	uint64_t GameInstance;
 	uint64_t LocalPlayer;
 	uint64_t PlayerController;
 	uint64_t AcknowledgedPawn;
 	uint64_t PlayerCameraManager;
 
-	//·¿¼äËùÓĞÍæ¼ÒÊı×é
+
 	uint64_t GameState;
 	uint64_t baseArray;
 	uint32_t PlayerCount;
 	uint32_t PlayerCountMax;
 
 
-	std::vector<uint64_t> TotemsCache;	// Í¼ÌÚ
-	std::vector<uint64_t> GeneratorCache;	// ·¢µç»ú
+	std::vector<uint64_t> TotemsCache;	
+	std::vector<uint64_t> GeneratorCache;
 	std::vector<uint64_t>  Pallets;
-	std::vector<uint64_t>  ´°¿Ú;
-	uint64_t HatchCache;//µØ½Ñ
-	uint64_t ConjoinedTwin;//Á¬ÌåÓ¤½ÇÉ«µÄ¶ù×Ó
+	std::vector<uint64_t>  çª—å£;
+	uint64_t HatchCache;
+	uint64_t ConjoinedTwin;
 
-	std::vector<Player> player; // Íæ¼ÒÊı¾İ
+	std::vector<Player> player; 
 
 };
 
 
-
-// ±íÊ¾ÈıÎ¬¿Õ¼äÖĞµÄÎ»ÖÃ»ò·½Ïò
 struct FVector {
 public:
-	double X; // 0x0000: X Öá×ø±ê
-	double Y; // 0x0008: Y Öá×ø±ê
-	double Z; // 0x0010: Z Öá×ø±ê
+	double X; 
+	double Y;
+	double Z;
 };
 
-// ±íÊ¾ÈıÎ¬¿Õ¼äÖĞµÄĞı×ª½Ç¶È
+
 struct FRotator {
 public:
-	double Pitch; // 0x0000: ÈÆ X Öá¸©Ñö½Ç
-	double Yaw;   // 0x0008: ÈÆ Y ÖáÆ«º½½Ç
-	double Roll;  // 0x0010: ÈÆ Z Öá·­¹ö½Ç
+	double Pitch; 
+	double Yaw; 
+	double Roll;  
 };
 
-// ´æ´¢Ïà»úµÄ×îĞ¡ÊÓÍ¼ĞÅÏ¢
 struct FMinimalViewInfo {
 public:
-	FVector Location;   // 0x0000: Ïà»úÊÀ½çÎ»ÖÃ
-	FRotator Rotation;  // 0x0018: Ïà»úĞı×ª
-	float    FOV;       // 0x0030: ÊÓÒ°·¶Î§
-	uint8    Padding[4]; // 0x0034: ¶ÔÆëÌî³ä
+	FVector Location;   
+	FRotator Rotation;  
+	float    FOV;      
+	uint8    Padding[4];
 };
 
-// ÓÃÓÚ»º´æÏà»úÄ³Ò»Ê±¿ÌµÄÊÓÍ¼×´Ì¬
+
 struct FCameraCacheEntry {
 public:
-	float            Timestamp; // 0x0000: Ê±¼ä´Á
-	uint8            Pad[12];   // 0x0004: Ìî³ä¶ÔÆë
-	FMinimalViewInfo POV;       // 0x0010: Ïà»úÊÓÍ¼ĞÅÏ¢
+	float            Timestamp; 
+	uint8            Pad[12];  
+	FMinimalViewInfo POV;      
 };
 
 
 
-// Ô¤¼ÆËã³£Á¿
-static constexpr float DEG_TO_RAD = 0.01745329251994329577f; // ¦Ğ/180
-static constexpr float FOV_DEG_TO_RAD = 0.00872664625997164788f; // ¦Ğ/360
+// é¢„è®¡ç®—å¸¸é‡
+static constexpr float DEG_TO_RAD = 0.01745329251994329577f; // Ï€/180
+static constexpr float FOV_DEG_TO_RAD = 0.00872664625997164788f; // Ï€/360
 inline __forceinline Vector2 WorldToScreen(const FMinimalViewInfo& viewinfo, const Vector3& world)
 {
-	// ÌáÈ¡Ğı×ª½Ç¶È²¢×ª»»Îª»¡¶È
+	// æå–æ—‹è½¬è§’åº¦å¹¶è½¬æ¢ä¸ºå¼§åº¦
 	const float radPitch = viewinfo.Rotation.Pitch * DEG_TO_RAD;
 	const float radYaw = viewinfo.Rotation.Yaw * DEG_TO_RAD;
 	const float radRoll = viewinfo.Rotation.Roll * DEG_TO_RAD;
 
-	// Ò»´ÎĞÔ¼ÆËãËùÓĞÈı½Çº¯Êı
+	// ä¸€æ¬¡æ€§è®¡ç®—æ‰€æœ‰ä¸‰è§’å‡½æ•°
 	const float SP = sinf(radPitch);
 	const float CP = cosf(radPitch);
 	const float SY = sinf(radYaw);
@@ -208,11 +159,11 @@ inline __forceinline Vector2 WorldToScreen(const FMinimalViewInfo& viewinfo, con
 	const float SR = sinf(radRoll);
 	const float CR = cosf(radRoll);
 
-	// Ô¤¼ÆËã³£ÓÃ³Ë»ı
+	// é¢„è®¡ç®—å¸¸ç”¨ä¹˜ç§¯
 	const float SRSP = SR * SP;
 	const float CRSP = CR * SP;
 
-	// Ö±½Ó¼ÆËãĞı×ªÖá·ÖÁ¿£¨±ÜÃâ´´½¨Vector3¶ÔÏó£©
+	// ç›´æ¥è®¡ç®—æ—‹è½¬è½´åˆ†é‡ï¼ˆé¿å…åˆ›å»ºVector3å¯¹è±¡ï¼‰
 	// vAxisX = (CP * CY, CP * SY, SP)
 	const float axisX_x = CP * CY;
 	const float axisX_y = CP * SY;
@@ -228,26 +179,26 @@ inline __forceinline Vector2 WorldToScreen(const FMinimalViewInfo& viewinfo, con
 	const float axisZ_y = CY * SR - CRSP * SY;
 	const float axisZ_z = CR * CP;
 
-	// ¼ÆËãÊÀ½ç×ø±êÓëÏà»úÎ»ÖÃµÄ²îÖµ
+	// è®¡ç®—ä¸–ç•Œåæ ‡ä¸ç›¸æœºä½ç½®çš„å·®å€¼
 	const float deltaX = world.x - viewinfo.Location.X;
 	const float deltaY = world.y - viewinfo.Location.Y;
 	const float deltaZ = world.z - viewinfo.Location.Z;
 
-	// ÊÖ¶¯¼ÆËãµã»ı½øĞĞ×ø±ê±ä»»
+	// æ‰‹åŠ¨è®¡ç®—ç‚¹ç§¯è¿›è¡Œåæ ‡å˜æ¢
 	const float transformedX = deltaX * axisY_x + deltaY * axisY_y + deltaZ * axisY_z;
 	const float transformedY = deltaX * axisZ_x + deltaY * axisZ_y + deltaZ * axisZ_z;
 	const float transformedZ = deltaX * axisX_x + deltaY * axisX_y + deltaZ * axisX_z;
 
-	// ±ÜÃâ³ıÁãºÍ¸ºZÖµ
+	// é¿å…é™¤é›¶å’Œè´ŸZå€¼
 	const float z = (transformedZ < 1.0f) ? 1.0f : transformedZ;
 
-	// Ô¤¼ÆËãÆÁÄ»ÖĞĞÄºÍFOVÏà¹ØÖµ
+	// é¢„è®¡ç®—å±å¹•ä¸­å¿ƒå’ŒFOVç›¸å…³å€¼
 	const float centerX = screenWidth * 0.5f;
 	const float centerY = screenHeight * 0.5f;
 	const float fovScale = centerX / tanf(viewinfo.FOV * FOV_DEG_TO_RAD);
 	const float invZ = fovScale / z;
 
-	// ¼ÆËã×îÖÕÆÁÄ»×ø±ê
+	// è®¡ç®—æœ€ç»ˆå±å¹•åæ ‡
 	const float screenX = centerX + transformedX * invZ;
 	const float screenY = centerY - transformedY * invZ;
 
@@ -258,25 +209,25 @@ inline __forceinline Vector2 WorldToScreen(const FMinimalViewInfo& viewinfo, con
 struct FNameEntryHeader final
 {
 public:
-	uint16_t                                        bIsWide : 1;       // 0x0000(0x0002) ×Ö·û´®±àÂë±êÖ¾£º0=ANSI(µ¥×Ö½Ú)£¬1=Wide(Ë«×Ö½Ú)
-	uint16_t                                        Len : 15;          // 0x0000(0x0002) ×Ö·û´®³¤¶È(0-32767)£¬×î´óÖ§³Ö32767¸ö×Ö·û
+	uint16_t                                        bIsWide : 1;     
+	uint16_t                                        Len : 15;        
 };
 
 
 union FStringData final
 {
 public:
-	char                                          AnsiName[0x400];    // 0x0000(0x0800) ANSI×Ö·û´®´æ´¢Çø(1024×Ö½Ú)
-	wchar_t                                       WideName[0x400];    // 0x0000(0x0800) Wide×Ö·û´®´æ´¢Çø(2048×Ö½Ú£¬¿í×Ö·ûÕ¼2×Ö½Ú)
+	char                                          AnsiName[0x400];  
+	wchar_t                                       WideName[0x400];   
 };
 
 
 struct FNameEntry final
 {
 public:
-	uint8                                         Pad_0[0x4];         // 0x0000(0x0004) ÄÚ´æ¶ÔÆëÌî³ä
-	struct FNameEntryHeader                       Header;             // 0x0004(0x0002) ×Ö·û´®ÔªÊı¾İ(±àÂëÀàĞÍºÍ³¤¶È)
-	union FStringData                             Name;               // 0x0006(0x0800) ×Ö·û´®Êµ¼Ê´æ´¢Çø(¸ù¾İHeaderÑ¡ÔñANSI»òWide)
+	uint8                                         Pad_0[0x4];     
+	struct FNameEntryHeader                       Header;        
+	union FStringData                             Name;           
 };
 
 
@@ -293,61 +244,37 @@ public:
 class FName final
 {
 public:
-	int32_t ComparisonIndex;  //0x0 // ´ò°üÁËÕæÕıµÄ DisplayIndex£¨Ãû×Ö±íÏÂ±ê£©+ Èô¸É±êÖ¾Î»
-	int32_t Number;           //0x4 // ÊµÀı±àºÅ£¬ÓÃÓÚÇø·ÖÍ¬Ãû²»Í¬ÊµÀı
-	int32_t DisplayIndex;     //0x8// ÕæÕıµÄÃû×Ö±íÏÂ±ê£¨ĞÂ°æÒıÇæ£©
+	int32_t ComparisonIndex;
+	int32_t Number;       
+	int32_t DisplayIndex;   
 };
 
-
-//´æ´¢½ÇÉ«Õ½¶·×´Ì¬ÓëºËĞÄÄÜÁ¦£¨ÈçÖ÷¶¯¼¼ÄÜ¡¢¸½¼ÓÎï¡¢¶ÎÎ»£©
 struct FCharacterStateData final
 {
-	int32_t                                         _pips;                  // ½ÇÉ«µÄ¶ÎÎ»/»ı·Ö£¨Ó°ÏìÆ¥ÅäµÈ¼¶»ò½±Àø½ø¶È£©
-	class FName                                   _powerId;                // ½ÇÉ«Ö÷¶¯¼¼ÄÜ/Á¦Á¿ID£¨É±ÊÖ×¨Êô£¬Èç"Power_Teleport"´«ËÍ£»ĞÒ´æÕßÍ¨³£ÎŞÊµ¼ÊÒâÒå£©
-	TArray<class FName>                           _addonIds;              // ×°±¸µÄ¸½¼ÓÎïIDÊı×é£¨Ç¿»¯Ö÷¶¯¼¼ÄÜĞ§¹û£¬ÈçËõ¶ÌÉ±ÊÖÁ¦Á¿ÀäÈ´Ê±¼ä£©
+	int32_t                                         _pips;               
+	class FName                                   _powerId;            
+	TArray<class FName>                           _addonIds;          
 
-	// ---------------------------
-	// ÄÚ´æ²¼¾ÖËµÃ÷£¨ÒıÇæ×Ô¶¯Éú³É£©£º
-	// 0x0000(0x0004)£º_pips Õ¼4×Ö½Ú
-	// 0x0004(0x000C)£º_powerId Õ¼12×Ö½Ú£¨FNameÄÚ²¿½á¹¹£©
-	// 0x0010(0x0010)£º_addonIds Êı×éÖ¸Õë¼°ÔªÊı¾İÕ¼16×Ö½Ú
-	// ×Ü´óĞ¡£º0x0020×Ö½Ú£¨32×Ö½Ú£©
-	// ---------------------------
 };
-//´æ´¢Íæ¼Ò×Ô¶¨ÒåÅäÖÃÓë±»¶¯¼¼ÄÜ£¨Èç×°±¸µÄ±»¶¯¼¼ÄÜ¡¢µÈ¼¶¡¢»ÕÕÂ£©
+
 struct FPlayerStateData final
 {
 public:
-	int32_t                                         CharacterLevel;            // ½ÇÉ«µÈ¼¶£¨Ó°Ïì±»¶¯¼¼ÄÜ½âËøÓëµÈ¼¶ÉÏÏŞ£©
-	class FName                                   EquipedFavorId;             // ×°±¸µÄ¼ÀÆ·ID£¨Ó°ÏìÓÎÏ·ÄÚÌØÊâ»úÖÆ£¬ÈçÑªµã»ñÈ¡Ğ§ÂÊ£©
-	TArray<class FName>                           EquipedPerkIds;            // **ºËĞÄ×Ö¶Î**£º×°±¸µÄ±»¶¯¼¼ÄÜIDÊı×é£¨Èç"Perk_RepairSpeedBoost"ĞŞÀí¼ÓËÙ£©
-	TArray<int32_t>                                 EquipedPerkLevels;      // ¶ÔÓ¦±»¶¯¼¼ÄÜµÄµÈ¼¶£¨1-3¼¶£¬¾ö¶¨¼¼ÄÜĞ§¹ûÇ¿¶È£©
-	//	class FString                                 EquippedBannerId;        // ×°±¸µÄºá·ùID£¨Íâ¹ÛÕ¹Ê¾£¬Óë¼¼ÄÜÎŞ¹Ø£©
-	//	class FString                                 EquippedBadgeId;        // ×°±¸µÄ»ÕÕÂID£¨³É¾ÍÕ¹Ê¾£¬Óë¼¼ÄÜÎŞ¹Ø£©
-	//	class FName                                   EquippedCharacterClass;// ½ÇÉ«Ö°ÒµID£¨Èç"Survivor_Leon"»ò"Killer_Michael"£¬¾ö¶¨¿É×°±¸µÄ¼¼ÄÜ³Ø£©
-	//	EGameState                                    _playerGameState;     // Íæ¼ÒÓÎÏ·×´Ì¬£¨´æ»î/µ¹µØ/ËÀÍöµÈ£¬Óë¼¼ÄÜ´¥·¢Ìõ¼şÏà¹Ø£©
-	//	uint8                                         Pad_5D[0x3];         // ÄÚ´æ¶ÔÆëÌî³ä£¨ÒıÇæ×Ô¶¯Éú³É£¬ÎŞĞèÊÖ¶¯´¦Àí£©
-	//	int32_t                                         _prestigeLevel;     // ÉùÍûµÈ¼¶£¨½âËø½ÇÉ«ÌØÊâÍâ¹Û»ò¼¼ÄÜÉı¼¶Â·¾¶£©
-	//	uint8                                         Pad_64[0x4];       // ÄÚ´æ¶ÔÆëÌî³ä£¨È·±£½á¹¹Ìå×Ü´óĞ¡Îª4×Ö½Ú±¶Êı£©
-
-		// ---------------------------
-		// ÄÚ´æ²¼¾ÖËµÃ÷£¨ÒıÇæ×Ô¶¯Éú³É£©£º
-		// 0x0000(0x0004)£ºCharacterLevel Õ¼4×Ö½Ú
-		// 0x0004(0x000C)£ºEquipedFavorId Õ¼12×Ö½Ú
-		// 0x0010(0x0010)£ºEquipedPerkIds Êı×éÕ¼16×Ö½Ú
-		// 0x0020(0x0010)£ºEquipedPerkLevels Êı×éÕ¼16×Ö½Ú
-		// 0x0030(0x0010)£ºEquippedBannerId Õ¼16×Ö½Ú£¨FStringÄÚ²¿½á¹¹£©
-		// 0x0040(0x0010)£ºEquippedBadgeId Õ¼16×Ö½Ú
-		// 0x0050(0x000C)£ºEquippedCharacterClass Õ¼12×Ö½Ú
-		// 0x005C(0x0001)£º_playerGameState Õ¼1×Ö½Ú
-		// 0x005D(0x0003)£ºPad_5D Ìî³ä3×Ö½Ú£¨¶ÔÆëµ½0x0060£©
-		// 0x0060(0x0004)£º_prestigeLevel Õ¼4×Ö½Ú
-		// 0x0064(0x0004)£ºPad_64 Ìî³ä4×Ö½Ú£¨×Ü´óĞ¡¶ÔÆëµ½0x0068£©
-		// ×Ü´óĞ¡£º0x0068×Ö½Ú£¨104×Ö½Ú£©
-		// ---------------------------
+	int32_t                                         CharacterLevel;         
+	class FName                                   EquipedFavorId;           
+	TArray<class FName>                           EquipedPerkIds;       
+	TArray<int32_t>                                 EquipedPerkLevels;   
+	//	class FString                                 EquippedBannerId;     
+	//	class FString                                 EquippedBadgeId;    
+	//	class FName                                   EquippedCharacterClass;
+	//	EGameState                                    _playerGameState;   
+	//	uint8                                         Pad_5D[0x3];    
+	//	int32_t                                         _prestigeLevel;  
+	//	uint8                                         Pad_64[0x4];   
+	
 };
 
-//¼¼ÄÜ¼ì¶¨
+//æŠ€èƒ½æ£€å®š
 struct FSpeedBasedNetSyncedValue
 {
 	uint8   Pad_0[0x18];
@@ -359,823 +286,811 @@ struct FSpeedBasedNetSyncedValue
 	uint8   Pad_2C[0xC];
 };
 
-//Í¼ÌÚÑÕÉ«ºÍ×´Ì¬
+//å›¾è…¾é¢œè‰²å’ŒçŠ¶æ€
 struct FLinearColor final
 {
 public:
-	float                                         R;                                                 // 0x0000(0x0004)(Edit, BlueprintVisible, ZeroConstructor, SaveGame, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic)
-	float                                         G;                                                 // 0x0004(0x0004)(Edit, BlueprintVisible, ZeroConstructor, SaveGame, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic)
-	float                                         B;                                                 // 0x0008(0x0004)(Edit, BlueprintVisible, ZeroConstructor, SaveGame, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic)
-	float                                         A;                                                 // 0x000C(0x0004)(Edit, BlueprintVisible, ZeroConstructor, SaveGame, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic)
-};
-
+	float                                         R;                                           
+	float                                         G;                                        
+	float                                         B;                                       
+	float                                         A;                                            
 enum class ETotemState : uint8
 {
-	Cleansed = 0,  // Í¼ÌÚÒÑ±»¾»»¯£¬´¦ÓÚ³õÊ¼/´¿¾»×´Ì¬
-	Dull = 1,      // Í¼ÌÚÊ§È¥ÄÜÁ¿£¬´¦ÓÚÎŞ»îĞÔ×´Ì¬
-	Hex = 2,       // Í¼ÌÚ±»×çÖä£¬Ê©¼Ó¸ºÃæĞ§¹û
-	Boon = 3,      // Í¼ÌÚ±»×£¸££¬Ìá¹©ÕıÃæÔöÒæ
+	Cleansed = 0,  
+	Dull = 1,     
+	Hex = 2,    
+	Boon = 3,    
 	ETotemState_MAX = 4,
 };
-// Ä¾°å×´Ì¬Ã¶¾ÙÀàĞÍ£¬ÓÃÓÚ±íÊ¾ÓÎÏ·ÖĞÄ¾°åµÄ²»Í¬×´Ì¬
+
 enum class EPalletState : uint8
 {
-	// Ä¾°åÖ±Á¢×´Ì¬£¨Î´±»·ÅÏÂ£©
+	
 	Up = 0,
-
-	// Ä¾°åÕıÔÚÏÂÂä¹ı³ÌÖĞ£¨´ÓÖ±Á¢µ½·ÅÏÂµÄ¶¯»­½×¶Î£©
 	Falling = 1,
-
-	// Ä¾°åÒÑ·ÅÏÂ×´Ì¬£¨Íæ¼Ò¿ÉÓÃÓÚ×èµ²»ò·­Ô½£©
 	Fallen = 2,
-
-	// Ä¾°åÒÑ±»ÆÆ»µ×´Ì¬£¨ÎŞ·¨ÔÙ½»»¥£©
 	Destroyed = 3,
-
-	// Ã¶¾ÙÖµÉÏÏŞ±ê¼Ç£¨ÓÃÓÚÊı×é±ß½ç¼ì²éµÈ³¡¾°£©
 	EPalletState_MAX = 4,
 };
-//Ä¾°åÅö×²ºĞ
+//æœ¨æ¿ç¢°æ’ç›’
 class UBoxComponent
 {
 public:
-	struct FVector                                BoxExtent;                                         // 0x05C0(0x0018)(Edit, BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, IsPlainOldData, NoDestructor, Protected, HasGetValueTypeHash, NativeAccessSpecifierProtected)
-	float                                         LineThickness;                                     // 0x05D8(0x0004)(Edit, BlueprintVisible, ExportObject, BlueprintReadOnly, ZeroConstructor, IsPlainOldData, NoDestructor, Protected, HasGetValueTypeHash, NativeAccessSpecifierProtected)
-	uint8                                         Pad_5DC[0x4];                                      // 0x05DC(0x0004)(Fixing Struct Size After Last Property [ Dumper-7 ])
+	struct FVector                                BoxExtent;                                   
+	float                                         LineThickness;                            
+	uint8                                         Pad_5DC[0x4];                               
 };
 
-
-//¿ÉÒÔ¸ù¾İÉ±ÊÖµÄÀàÃû»òÖ÷¶¯¼¼ÄÜ·Ö±æÉ±ÊÖ½ÇÉ«
-struct É±ÊÖ {
-	inline static const std::string ¼Ğ×Ó = "BP_Slasher_Character_01_C";
-	inline static const std::string Ğ¡¶£µ± = "BP_Slasher_Character_02_C";
-	inline static const std::string È³È³ = "BP_Slasher_Character_03_C";
-	inline static const std::string »¤Ê¿ = "BP_Slasher_Character_04_C";
-	inline static const std::string ÂõÊå = "BP_Slasher_Character_05_C";
-	inline static const std::string ÀîÄÌÄÌ = "BP_Slasher_Character_06_C";
-	inline static const std::string ÀÏÑî = "BP_Slasher_Character_07_C";
-	inline static const std::string ÍÃÂè = "BP_Slasher_Character_08_C";
-	inline static const std::string Æ¤Á³ = "BP_Slasher_Character_09_C";
-	inline static const std::string ÃÎ÷Ê = "BP_Slasher_Character_10_C";
-	inline static const std::string ÖíÃÃ = "BP_Slasher_Character_11_C";
-	inline static const std::string Ğ¡³ó = "BP_Slasher_Character_12_C";
-	inline static const std::string ÁãÃÃ = "BP_Slasher_Character_13_C";
-	inline static const std::string ¾üÍÅ = "BP_Slasher_Character_14_C";
-	inline static const std::string ÍÂÂè = "BP_Slasher_Character_15_C";
-	inline static const std::string ¹íÃæ = "BP_Slasher_Character_16_C";
-	inline static const std::string Ä§Íõ = "BP_Slasher_Character_17_C";
-	inline static const std::string ¹íÎäÊ¿ = "BP_Slasher_Character_18_C";
-	inline static const std::string ÇÀÊÖ = "BP_Slasher_Character_19_C";
-	inline static const std::string Èı½ÇÍ· = "BP_Slasher_Character_20_C";
-	inline static const std::string ¿İÄ§ = "BP_Slasher_Character_21_C";
-	inline static const std::string Á¬ÌåÓ¤ = "BP_Slasher_Character_22_C";
-	inline static const std::string ¸ç¸ç = "BP_Slasher_Character_23_C";
-	inline static const std::string ×·»÷Õß = "BP_Slasher_Character_24_C";
-	inline static const std::string ¶¤×ÓÍ· = "BP_Slasher_Character_25_C";
-	inline static const std::string Äñ½ã = "BP_Slasher_Character_26_C";
-	inline static const std::string Õê×Ó = "BP_Slasher_Character_27_C";
-	inline static const std::string Ó°Ä§ = "BP_Slasher_Character_28_C";
-	inline static const std::string ÍşË¹¿Ë = "BP_Slasher_Character_29_C";
-	inline static const std::string ¶ñÆïÊ¿ = "BP_Slasher_Character_30_C";
-	inline static const std::string °×¹ÇÉÌÈË = "BP_Slasher_Character_31_C";
-	inline static const std::string Ææµã = "BP_Slasher_Character_32_C";
-	inline static const std::string ÒìĞÎ = "BP_Slasher_Character_33_C";
-	inline static const std::string ºÃº¢×Ó = "BP_Slasher_Character_34_C";
-	inline static const std::string Î´Öª¶ñÎï = "BP_Slasher_Character_35_C";
-	inline static const std::string Î×Ñı = "BP_Slasher_Character_36_C";
-	inline static const std::string µÂ¹ÅÀ­ = "BP_Slasher_Character_37_C";
-	inline static const std::string ÅËºì = "BP_Slasher_Character_38_C";
-	inline static const std::string ½ğÄ¾ÑĞ = "BP_Slasher_Character_39_C";
-	inline static const std::string ÀÏµÇ = "BP_Slasher_Character_40_01_C";
+struct æ€æ‰‹ {
+	inline static const std::string å¤¹å­ = "BP_Slasher_Character_01_C";
+	inline static const std::string å°å®å½“ = "BP_Slasher_Character_02_C";
+	inline static const std::string ç˜¸ç˜¸ = "BP_Slasher_Character_03_C";
+	inline static const std::string æŠ¤å£« = "BP_Slasher_Character_04_C";
+	inline static const std::string è¿ˆå” = "BP_Slasher_Character_05_C";
+	inline static const std::string æå¥¶å¥¶ = "BP_Slasher_Character_06_C";
+	inline static const std::string è€æ¨ = "BP_Slasher_Character_07_C";
+	inline static const std::string å…”å¦ˆ = "BP_Slasher_Character_08_C";
+	inline static const std::string çš®è„¸ = "BP_Slasher_Character_09_C";
+	inline static const std::string æ¢¦é­‡ = "BP_Slasher_Character_10_C";
+	inline static const std::string çŒªå¦¹ = "BP_Slasher_Character_11_C";
+	inline static const std::string å°ä¸‘ = "BP_Slasher_Character_12_C";
+	inline static const std::string é›¶å¦¹ = "BP_Slasher_Character_13_C";
+	inline static const std::string å†›å›¢ = "BP_Slasher_Character_14_C";
+	inline static const std::string åå¦ˆ = "BP_Slasher_Character_15_C";
+	inline static const std::string é¬¼é¢ = "BP_Slasher_Character_16_C";
+	inline static const std::string é­”ç‹ = "BP_Slasher_Character_17_C";
+	inline static const std::string é¬¼æ­¦å£« = "BP_Slasher_Character_18_C";
+	inline static const std::string æŠ¢æ‰‹ = "BP_Slasher_Character_19_C";
+	inline static const std::string ä¸‰è§’å¤´ = "BP_Slasher_Character_20_C";
+	inline static const std::string æ¯é­” = "BP_Slasher_Character_21_C";
+	inline static const std::string è¿ä½“å©´ = "BP_Slasher_Character_22_C";
+	inline static const std::string å“¥å“¥ = "BP_Slasher_Character_23_C";
+	inline static const std::string è¿½å‡»è€… = "BP_Slasher_Character_24_C";
+	inline static const std::string é’‰å­å¤´ = "BP_Slasher_Character_25_C";
+	inline static const std::string é¸Ÿå§ = "BP_Slasher_Character_26_C";
+	inline static const std::string è´å­ = "BP_Slasher_Character_27_C";
+	inline static const std::string å½±é­” = "BP_Slasher_Character_28_C";
+	inline static const std::string å¨æ–¯å…‹ = "BP_Slasher_Character_29_C";
+	inline static const std::string æ¶éª‘å£« = "BP_Slasher_Character_30_C";
+	inline static const std::string ç™½éª¨å•†äºº = "BP_Slasher_Character_31_C";
+	inline static const std::string å¥‡ç‚¹ = "BP_Slasher_Character_32_C";
+	inline static const std::string å¼‚å½¢ = "BP_Slasher_Character_33_C";
+	inline static const std::string å¥½å­©å­ = "BP_Slasher_Character_34_C";
+	inline static const std::string æœªçŸ¥æ¶ç‰© = "BP_Slasher_Character_35_C";
+	inline static const std::string å·«å¦– = "BP_Slasher_Character_36_C";
+	inline static const std::string å¾·å¤æ‹‰ = "BP_Slasher_Character_37_C";
+	inline static const std::string æ½˜çº¢ = "BP_Slasher_Character_38_C";
+	inline static const std::string é‡‘æœ¨ç ” = "BP_Slasher_Character_39_C";
+	inline static const std::string è€ç™» = "BP_Slasher_Character_40_01_C";
 
 
-	inline static const std::string ¼Ğ×ÓÖ÷¶¯¼¼ÄÜ = "Item_Slasher_Beartrap";
-	inline static const std::string Ğ¡¶£µ±Ö÷¶¯¼¼ÄÜ = "Item_Slasher_CloakBell";
-	inline static const std::string È³È³Ö÷¶¯¼¼ÄÜ = "Item_Slasher_Chainsaw";
-	inline static const std::string »¤Ê¿Ö÷¶¯¼¼ÄÜ = "Item_Slasher_Blinker";
-	inline static const std::string ÂõÊåÖ÷¶¯¼¼ÄÜ = "Item_Slasher_Stalker";
-	inline static const std::string ÀîÄÌÄÌÖ÷¶¯¼¼ÄÜ = "Item_Slasher_PhantomTrap";
-	inline static const std::string ÀÏÑîÖ÷¶¯¼¼ÄÜ = "Item_Slasher_Killer07Item";
-	inline static const std::string ÍÃÂèÖ÷¶¯¼¼ÄÜ = "Item_Slasher_Hatchet";
-	inline static const std::string Æ¤Á³Ö÷¶¯¼¼ÄÜ = "Item_Slasher_LFChainsaw";
-	inline static const std::string ÃÎ÷ÊÖ÷¶¯¼¼ÄÜ = "Item_Slasher_DreamInducer";
-	inline static const std::string ÖíÃÃÖ÷¶¯¼¼ÄÜ = "Item_Slasher_ReverseBearTrap";
-	inline static const std::string Ğ¡³óÖ÷¶¯¼¼ÄÜ = "Item_Slasher_GasBomb";
-	inline static const std::string ÁãÃÃÖ÷¶¯¼¼ÄÜ = "Item_Slasher_PhaseWalker";
-	inline static const std::string ¾üÍÅÖ÷¶¯¼¼ÄÜ = "Item_Slasher_Frenzy";
-	inline static const std::string ÍÂÂèÖ÷¶¯¼¼ÄÜ = "Item_Slasher_PlaguePower";
-	inline static const std::string ¹íÃæÖ÷¶¯¼¼ÄÜ = "Item_Slasher_GhostPower";
-	inline static const std::string Ä§ÍõÖ÷¶¯¼¼ÄÜ = "Item_Slasher_QatarKillerPower";
-	inline static const std::string ¹íÎäÊ¿Ö÷¶¯¼¼ÄÜ = "Item_Slasher_Kanobo";
-	inline static const std::string ÇÀÊÖÖ÷¶¯¼¼ÄÜ = "Item_Slasher_HarpoonRifle";
-	inline static const std::string Èı½ÇÍ·Ö÷¶¯¼¼ÄÜ = "Item_Slasher_TormentMode";
-	inline static const std::string ¿İÄ§Ö÷¶¯¼¼ÄÜ = "Item_Slasher_K21Power";
-	inline static const std::string Á¬ÌåÓ¤Ö÷¶¯¼¼ÄÜ = "Item_Slasher_K22Power";
-	inline static const std::string ¸ç¸çÖ÷¶¯¼¼ÄÜ = "Item_Slasher_ThrowingKnives";
-	inline static const std::string ×·»÷ÕßÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K24Power";
-	inline static const std::string ¶¤×ÓÍ·Ö÷¶¯¼¼ÄÜ = "Item_Slasher_K25Power";
-	inline static const std::string Äñ½ãÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K26Power";
-	inline static const std::string Õê×ÓÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K27Power";
-	inline static const std::string Ó°Ä§Ö÷¶¯¼¼ÄÜ = "Item_Slasher_K28Power";
-	inline static const std::string ÍşË¹¿ËÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K29Power";
-	inline static const std::string ¶ñÆïÊ¿Ö÷¶¯¼¼ÄÜ = "Item_Slasher_K30Power";
-	inline static const std::string °×¹ÇÉÌÈËÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K31Power";
-	inline static const std::string ÆæµãÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K32Power";
-	inline static const std::string ÒìĞÎÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K33Power";
-	inline static const std::string ºÃº¢×ÓÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K34Power";
-	inline static const std::string Î´Öª¶ñÎïÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K35Power";
-	inline static const std::string Î×ÑıÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K36Power";
-	inline static const std::string µÂ¹ÅÀ­Ö÷¶¯¼¼ÄÜ = "Item_Slasher_K37Power";
-	inline static const std::string ÅËºìÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K38Power";
-	inline static const std::string ½ğÄ¾ÑĞÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K39Power";
-	inline static const std::string ÀÏµÇÖ÷¶¯¼¼ÄÜ = "Item_Slasher_K40Power";
+	inline static const std::string å¤¹å­ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_Beartrap";
+	inline static const std::string å°å®å½“ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_CloakBell";
+	inline static const std::string ç˜¸ç˜¸ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_Chainsaw";
+	inline static const std::string æŠ¤å£«ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_Blinker";
+	inline static const std::string è¿ˆå”ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_Stalker";
+	inline static const std::string æå¥¶å¥¶ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_PhantomTrap";
+	inline static const std::string è€æ¨ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_Killer07Item";
+	inline static const std::string å…”å¦ˆä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_Hatchet";
+	inline static const std::string çš®è„¸ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_LFChainsaw";
+	inline static const std::string æ¢¦é­‡ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_DreamInducer";
+	inline static const std::string çŒªå¦¹ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_ReverseBearTrap";
+	inline static const std::string å°ä¸‘ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_GasBomb";
+	inline static const std::string é›¶å¦¹ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_PhaseWalker";
+	inline static const std::string å†›å›¢ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_Frenzy";
+	inline static const std::string åå¦ˆä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_PlaguePower";
+	inline static const std::string é¬¼é¢ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_GhostPower";
+	inline static const std::string é­”ç‹ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_QatarKillerPower";
+	inline static const std::string é¬¼æ­¦å£«ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_Kanobo";
+	inline static const std::string æŠ¢æ‰‹ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_HarpoonRifle";
+	inline static const std::string ä¸‰è§’å¤´ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_TormentMode";
+	inline static const std::string æ¯é­”ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K21Power";
+	inline static const std::string è¿ä½“å©´ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K22Power";
+	inline static const std::string å“¥å“¥ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_ThrowingKnives";
+	inline static const std::string è¿½å‡»è€…ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K24Power";
+	inline static const std::string é’‰å­å¤´ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K25Power";
+	inline static const std::string é¸Ÿå§ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K26Power";
+	inline static const std::string è´å­ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K27Power";
+	inline static const std::string å½±é­”ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K28Power";
+	inline static const std::string å¨æ–¯å…‹ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K29Power";
+	inline static const std::string æ¶éª‘å£«ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K30Power";
+	inline static const std::string ç™½éª¨å•†äººä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K31Power";
+	inline static const std::string å¥‡ç‚¹ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K32Power";
+	inline static const std::string å¼‚å½¢ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K33Power";
+	inline static const std::string å¥½å­©å­ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K34Power";
+	inline static const std::string æœªçŸ¥æ¶ç‰©ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K35Power";
+	inline static const std::string å·«å¦–ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K36Power";
+	inline static const std::string å¾·å¤æ‹‰ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K37Power";
+	inline static const std::string æ½˜çº¢ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K38Power";
+	inline static const std::string é‡‘æœ¨ç ”ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K39Power";
+	inline static const std::string è€ç™»ä¸»åŠ¨æŠ€èƒ½ = "Item_Slasher_K40Power";
 
 };
 
-// É±ÊÖÃû³ÆÓ³Éä±í
+// æ€æ‰‹åç§°æ˜ å°„è¡¨
 static const std::unordered_map<std::string, std::wstring> nameMapping = {
-	{É±ÊÖ::¼Ğ×Ó, L"¼Ğ×Ó"},
-	{É±ÊÖ::Ğ¡¶£µ±, L"Ğ¡¶£µ±"},
-	{É±ÊÖ::È³È³, L"È³È³"},
-	{É±ÊÖ::»¤Ê¿, L"»¤Ê¿"},
-	{É±ÊÖ::ÂõÊå, L"ÂõÊå"},
-	{É±ÊÖ::ÀîÄÌÄÌ, L"ÀîÄÌÄÌ"},
-	{É±ÊÖ::ÀÏÑî, L"ÀÏÑî"},
-	{É±ÊÖ::Æ¤Á³, L"Æ¤Á³"},
-	{É±ÊÖ::ÍÃÂè, L"ÍÃÂè"},
-	{É±ÊÖ::ÃÎ÷Ê, L"ÃÎ÷Ê"},
-	{É±ÊÖ::ÖíÃÃ, L"ÖíÃÃ"},
-	{É±ÊÖ::Ğ¡³ó, L"Ğ¡³ó"},
-	{É±ÊÖ::ÁãÃÃ, L"ÁãÃÃ"},
-	{É±ÊÖ::¾üÍÅ, L"¾üÍÅ"},
-	{É±ÊÖ::ÍÂÂè, L"ÍÂÂè"},
-	{É±ÊÖ::¹íÃæ, L"¹íÃæ"},
-	{É±ÊÖ::Ä§Íõ, L"Ä§Íõ"},
-	{É±ÊÖ::¹íÎäÊ¿, L"¹íÎäÊ¿"},
-	{É±ÊÖ::ÇÀÊÖ, L"ÇÀÊÖ"},
-	{É±ÊÖ::Èı½ÇÍ·, L"Èı½ÇÍ·"},
-	{É±ÊÖ::¿İÄ§, L"¿İÄ§"},
-	{É±ÊÖ::Á¬ÌåÓ¤, L"Á¬ÌåÓ¤"},
-	{É±ÊÖ::¸ç¸ç, L"¸ç¸ç"},
-	{É±ÊÖ::×·»÷Õß, L"×·»÷Õß"},
-	{É±ÊÖ::¶¤×ÓÍ·, L"¶¤×ÓÍ·"},
-	{É±ÊÖ::Äñ½ã, L"Äñ½ã"},
-	{É±ÊÖ::Õê×Ó, L"Õê×Ó"},
-	{É±ÊÖ::Ó°Ä§, L"Ó°Ä§"},
-	{É±ÊÖ::ÍşË¹¿Ë, L"ÍşË¹¿Ë"},
-	{É±ÊÖ::¶ñÆïÊ¿, L"¶ñÆïÊ¿"},
-	{É±ÊÖ::°×¹ÇÉÌÈË, L"°×¹ÇÉÌÈË"},
-	{É±ÊÖ::Ææµã, L"Ææµã"},
-	{É±ÊÖ::ÒìĞÎ, L"ÒìĞÎ"},
-	{É±ÊÖ::ºÃº¢×Ó, L"ºÃº¢×Ó"},
-	{É±ÊÖ::Î´Öª¶ñÎï, L"Î´Öª¶ñÎï"},
-	{É±ÊÖ::Î×Ñı, L"Î×Ñı"},
-	{É±ÊÖ::µÂ¹ÅÀ­, L"µÂ¹ÅÀ­"},
-	{É±ÊÖ::ÅËºì, L"ÅËºì"},
-	{É±ÊÖ::½ğÄ¾ÑĞ, L"½ğÄ¾ÑĞ"},
-	{É±ÊÖ::ÀÏµÇ, L"ÀÏµÇ"},
+	{æ€æ‰‹::å¤¹å­, L"å¤¹å­"},
+	{æ€æ‰‹::å°å®å½“, L"å°å®å½“"},
+	{æ€æ‰‹::ç˜¸ç˜¸, L"ç˜¸ç˜¸"},
+	{æ€æ‰‹::æŠ¤å£«, L"æŠ¤å£«"},
+	{æ€æ‰‹::è¿ˆå”, L"è¿ˆå”"},
+	{æ€æ‰‹::æå¥¶å¥¶, L"æå¥¶å¥¶"},
+	{æ€æ‰‹::è€æ¨, L"è€æ¨"},
+	{æ€æ‰‹::çš®è„¸, L"çš®è„¸"},
+	{æ€æ‰‹::å…”å¦ˆ, L"å…”å¦ˆ"},
+	{æ€æ‰‹::æ¢¦é­‡, L"æ¢¦é­‡"},
+	{æ€æ‰‹::çŒªå¦¹, L"çŒªå¦¹"},
+	{æ€æ‰‹::å°ä¸‘, L"å°ä¸‘"},
+	{æ€æ‰‹::é›¶å¦¹, L"é›¶å¦¹"},
+	{æ€æ‰‹::å†›å›¢, L"å†›å›¢"},
+	{æ€æ‰‹::åå¦ˆ, L"åå¦ˆ"},
+	{æ€æ‰‹::é¬¼é¢, L"é¬¼é¢"},
+	{æ€æ‰‹::é­”ç‹, L"é­”ç‹"},
+	{æ€æ‰‹::é¬¼æ­¦å£«, L"é¬¼æ­¦å£«"},
+	{æ€æ‰‹::æŠ¢æ‰‹, L"æŠ¢æ‰‹"},
+	{æ€æ‰‹::ä¸‰è§’å¤´, L"ä¸‰è§’å¤´"},
+	{æ€æ‰‹::æ¯é­”, L"æ¯é­”"},
+	{æ€æ‰‹::è¿ä½“å©´, L"è¿ä½“å©´"},
+	{æ€æ‰‹::å“¥å“¥, L"å“¥å“¥"},
+	{æ€æ‰‹::è¿½å‡»è€…, L"è¿½å‡»è€…"},
+	{æ€æ‰‹::é’‰å­å¤´, L"é’‰å­å¤´"},
+	{æ€æ‰‹::é¸Ÿå§, L"é¸Ÿå§"},
+	{æ€æ‰‹::è´å­, L"è´å­"},
+	{æ€æ‰‹::å½±é­”, L"å½±é­”"},
+	{æ€æ‰‹::å¨æ–¯å…‹, L"å¨æ–¯å…‹"},
+	{æ€æ‰‹::æ¶éª‘å£«, L"æ¶éª‘å£«"},
+	{æ€æ‰‹::ç™½éª¨å•†äºº, L"ç™½éª¨å•†äºº"},
+	{æ€æ‰‹::å¥‡ç‚¹, L"å¥‡ç‚¹"},
+	{æ€æ‰‹::å¼‚å½¢, L"å¼‚å½¢"},
+	{æ€æ‰‹::å¥½å­©å­, L"å¥½å­©å­"},
+	{æ€æ‰‹::æœªçŸ¥æ¶ç‰©, L"æœªçŸ¥æ¶ç‰©"},
+	{æ€æ‰‹::å·«å¦–, L"å·«å¦–"},
+	{æ€æ‰‹::å¾·å¤æ‹‰, L"å¾·å¤æ‹‰"},
+	{æ€æ‰‹::æ½˜çº¢, L"æ½˜çº¢"},
+	{æ€æ‰‹::é‡‘æœ¨ç ”, L"é‡‘æœ¨ç ”"},
+	{æ€æ‰‹::è€ç™», L"è€ç™»"},
 
 
-	{É±ÊÖ::¼Ğ×ÓÖ÷¶¯¼¼ÄÜ, L"¼Ğ×Ó"},
-	{É±ÊÖ::Ğ¡¶£µ±Ö÷¶¯¼¼ÄÜ, L"Ğ¡¶£µ±"},
-	{É±ÊÖ::È³È³Ö÷¶¯¼¼ÄÜ, L"È³È³"},
-	{É±ÊÖ::»¤Ê¿Ö÷¶¯¼¼ÄÜ, L"»¤Ê¿"},
-	{É±ÊÖ::ÂõÊåÖ÷¶¯¼¼ÄÜ, L"ÂõÊå"},
-	{É±ÊÖ::ÀîÄÌÄÌÖ÷¶¯¼¼ÄÜ, L"ÀîÄÌÄÌ"},
-	{É±ÊÖ::ÀÏÑîÖ÷¶¯¼¼ÄÜ, L"ÀÏÑî"},
-	{É±ÊÖ::ÍÃÂèÖ÷¶¯¼¼ÄÜ, L"ÍÃÂè"},
-	{É±ÊÖ::Æ¤Á³Ö÷¶¯¼¼ÄÜ, L"Æ¤Á³"},
-	{É±ÊÖ::ÃÎ÷ÊÖ÷¶¯¼¼ÄÜ, L"ÃÎ÷Ê"},
-	{É±ÊÖ::ÖíÃÃÖ÷¶¯¼¼ÄÜ, L"ÖíÃÃ"},
-	{É±ÊÖ::Ğ¡³óÖ÷¶¯¼¼ÄÜ, L"Ğ¡³ó"},
-	{É±ÊÖ::ÁãÃÃÖ÷¶¯¼¼ÄÜ, L"ÁãÃÃ"},
-	{É±ÊÖ::¾üÍÅÖ÷¶¯¼¼ÄÜ, L"¾üÍÅ"},
-	{É±ÊÖ::ÍÂÂèÖ÷¶¯¼¼ÄÜ, L"ÍÂÂè"},
-	{É±ÊÖ::¹íÃæÖ÷¶¯¼¼ÄÜ, L"¹íÃæ"},
-	{É±ÊÖ::Ä§ÍõÖ÷¶¯¼¼ÄÜ, L"Ä§Íõ"},
-	{É±ÊÖ::¹íÎäÊ¿Ö÷¶¯¼¼ÄÜ, L"¹íÎäÊ¿"},
-	{É±ÊÖ::ÇÀÊÖÖ÷¶¯¼¼ÄÜ, L"ÇÀÊÖ"},
-	{É±ÊÖ::Èı½ÇÍ·Ö÷¶¯¼¼ÄÜ, L"Èı½ÇÍ·"},
-	{É±ÊÖ::¿İÄ§Ö÷¶¯¼¼ÄÜ, L"¿İÄ§Ö÷"},
-	{É±ÊÖ::Á¬ÌåÓ¤Ö÷¶¯¼¼ÄÜ, L"Á¬ÌåÓ¤"},
-	{É±ÊÖ::¸ç¸çÖ÷¶¯¼¼ÄÜ, L"¸ç¸ç"},
-	{É±ÊÖ::×·»÷ÕßÖ÷¶¯¼¼ÄÜ, L"×·»÷Õß"},
-	{É±ÊÖ::¶¤×ÓÍ·Ö÷¶¯¼¼ÄÜ, L"¶¤×ÓÍ·"},
-	{É±ÊÖ::Äñ½ãÖ÷¶¯¼¼ÄÜ, L"Äñ½ã"},
-	{É±ÊÖ::Õê×ÓÖ÷¶¯¼¼ÄÜ, L"Õê×Ó"},
-	{É±ÊÖ::Ó°Ä§Ö÷¶¯¼¼ÄÜ, L"Ó°Ä§"},
-	{É±ÊÖ::ÍşË¹¿ËÖ÷¶¯¼¼ÄÜ, L"ÍşË¹¿Ë"},
-	{É±ÊÖ::¶ñÆïÊ¿Ö÷¶¯¼¼ÄÜ, L"¶ñÆïÊ¿"},
-	{É±ÊÖ::°×¹ÇÉÌÈËÖ÷¶¯¼¼ÄÜ, L"°×¹ÇÉÌÈË"},
-	{É±ÊÖ::ÆæµãÖ÷¶¯¼¼ÄÜ, L"Ææµã"},
-	{É±ÊÖ::ÒìĞÎÖ÷¶¯¼¼ÄÜ, L"ÒìĞÎ"},
-	{É±ÊÖ::ºÃº¢×ÓÖ÷¶¯¼¼ÄÜ, L"ºÃº¢×Ó"},
-	{É±ÊÖ::Î´Öª¶ñÎïÖ÷¶¯¼¼ÄÜ, L"Î´Öª¶ñÎï"},
-	{É±ÊÖ::Î×ÑıÖ÷¶¯¼¼ÄÜ, L"Î×Ñı"},
-	{É±ÊÖ::µÂ¹ÅÀ­Ö÷¶¯¼¼ÄÜ, L"µÂ¹ÅÀ­"},
-	{É±ÊÖ::ÅËºìÖ÷¶¯¼¼ÄÜ, L"ÅËºì"},
-	{É±ÊÖ::½ğÄ¾ÑĞÖ÷¶¯¼¼ÄÜ, L"½ğÄ¾ÑĞ"},
-	{É±ÊÖ::ÀÏµÇÖ÷¶¯¼¼ÄÜ, L"ÀÏµÇ"}
-
-};
-
-
-struct ĞÒ´æÕßÅäÖÃ¼¼ÄÜ {
-	inline static const std::string ²»Ï§Ò»ÇĞ1 = "";
-	inline static const std::string ²»Ï§Ò»ÇĞ2 = "AnyMeansNecessary";
-	inline static const std::string ²»Í´²»Ñ÷ = "NoMither";
-	inline static const std::string ²»ÏéÔ¤¸Ğ = "Premonition";
-	inline static const std::string ÓëÎÒ¹²Îè = "Dance_with_me";
-	inline static const std::string ¶«É½ÔÙÆğ = "S26P02";
-	inline static const std::string ÎªÉú¶øÉú = "S37P02";
-	inline static const std::string Íö¸¸¾¯ÑÔ = "S30P01";
-	inline static const std::string ½»¸åÈÕ = "S40P03";
-	inline static const std::string ÈËÖ®ÓÂÆø = "TheMettleOfMan";
-	inline static const std::string ËÆÔøÏàÊ¶ = "Deja_Vu";
-	inline static const std::string µÍµ÷ĞĞÊÂ = "S32P03";
-	inline static const std::string Óà¹â³¤´æ = "S31P02";
-	inline static const std::string ±£Ä· = "Babysitter";
-	inline static const std::string ¹âÃ÷ÓÂÊ¿ = "S40P01";
-	inline static const std::string ¿Ë·şÄÑ¹Ø = "S29P01";
-	inline static const std::string ±ø²»ÑáÕ© = "S24P02";
-	inline static const std::string ÄÚÔÚ×¨×¢ = "S31P01";
-	inline static const std::string ÄÚĞÄÖ®Á¦ = "InnerStrength";
-	inline static const std::string ³å´Ì±¬·¢ = "Sprint_Burst";
-	inline static const std::string ·Ö±ÀÀëÎö = "Breakdown";
-	inline static const std::string ÇĞÎğÉËº¦ = "S46P01";
-	inline static const std::string ½ÙºóÓàÉú = "AfterCare";
-	inline static const std::string ÓÂÍùÖ±Ç° = "HeadOn";
-	inline static const std::string »¯Ñ§ÏİÚå = "S39P02";
-	inline static const std::string Ç§ÀïÑÛ = "S28P01";
-	inline static const std::string ¼´ĞË±íÑİ = "S38P01";
-	inline static const std::string Ñ¹ÒÖÍ¬ÃË = "RepressedAlliance";
-	inline static const std::string ÓÑÒêÈü = "S35P02";
-	inline static const std::string ·´ÖÆÖ®Á¦ = "S26P01";
-	inline static const std::string ¸÷×ÔÎª°² = "S45P02";
-	inline static const std::string Í¬Ö¾ÇéÒê = "Camaraderie";
-	inline static const std::string Í¬×å = "Kindred";
-	inline static const std::string Í¬Éú¹²ËÀ = "No_One_Left_Behind";
-	inline static const std::string Ò÷ÓÎÊ«ÈË¼¤Àø = "S42P02";
-	inline static const std::string Ò§½ôÑÀ¹Ø = "S27P01";
-	inline static const std::string ÉÆÓĞÉÆ±¨ = "Deliverance";
-	inline static const std::string ÍÅ½áÒ»ÖÂ = "Solidarity";
-	inline static const std::string ÍÅ¶ÓºÏ×÷_¶şÈËÖ®Á¦ = "S35P03";
-	inline static const std::string ÍÅ¶ÓºÏ×÷_È«ÌåÒş±Î = "S36P03";
-	inline static const std::string ¼á²»¿É´İ = "SelfSufficient";
-	inline static const std::string Éù¶«»÷Î÷ = "Diversion";
-	inline static const std::string ¸´ËÕÖ®·ç = "SecondWind";
-	inline static const std::string ºÃÔË»á´«È¾ = "Up_The_Ante";
-	inline static const std::string ÊØÒ¹ÈË = "Vigil";
-	inline static const std::string °²¸§ÉúÁé = "Calm_Spirit";
-	inline static const std::string ¶¨ĞÄÍè = "S33P02";
-	inline static const std::string ¶Ô²ßÖÎÁÆ = "S32P02";
-	inline static const std::string Ï£ÍûÖ®Òí = "Hope";
-	inline static const std::string Ä»ºóÍæ¼Ò = "S36P01";
-	inline static const std::string Æ½ÎÈ×ÅÂ½ = "Balanced_Landing";
-	inline static const std::string ²¢ĞĞ½øÕ¹ = "FlipFlop";
-	inline static const std::string ĞÒÔË´­Ï¢ = "LuckyBreak";
-	inline static const std::string ĞÒÔËĞÇ = "S39P01";
-	inline static const std::string Ç¿Á¦ÕõÔú = "S24P03";
-	inline static const std::string Ç¿µÁÖ±¾õ = "Plunderers_Instinct";
-	inline static const std::string µ±»úÁ¢¶Ï = "S35P01";
-	inline static const std::string ĞÄÁé¹²Ãù = "Empathy";
-	inline static const std::string ĞÄ¾²ÑÛÃ÷ = "S42P03";
-	inline static const std::string ¿ìËÙ·´Ó¦ = "S46P03";
-	inline static const std::string ¿ìËÙ²ßÂÔ = "S34P03";
-	inline static const std::string ¼±ÓÚÇó³É = "S31P03";
-	inline static const std::string ¼±ËÙ¾²Ú× = "QuickQuiet";
-	inline static const std::string ¶÷´Í_Ö¸ÊıÔö³¤ = "S29P03";
-	inline static const std::string ¶÷´Í_Ã÷ÁÁ = "S40P02";
-	inline static const std::string ¶÷´Í_°µÓ°²½ = "S28P03";
-	inline static const std::string ¶÷´Í_ÖÎÁÆÖ®»· = "S28P02";
-	inline static const std::string ¶÷´Í_ºÚ°µÀíÂÛ = "S30P03";
-	inline static const std::string ¸ĞÍ¬ÉíÊÜ = "S30P02";
-	inline static const std::string ³É¹¦½İ¾¶ = "S25P01";
-	inline static const std::string ¼¼ÊõÔ± = "Technician";
-	inline static const std::string ÕõÍÑ¼¤Àø = "Breakout";
-	inline static const std::string Ğ¯ÊÖºÏ×÷ = "Bond";
-	inline static const std::string ĞÂÈË¾«Éñ = "S27P03";
-	inline static const std::string Ê±²»ÎÒ´ı = "BorrowedTime";
-	inline static const std::string Ã÷²ìÇïºÁ = "S24P01";
-	inline static const std::string °µºÚ¸ĞÖª = "Dark_Sense";
-	inline static const std::string ±©×ß×å = "Urban_Evasion";
-	inline static const std::string ×îºóµÄÉú»¹Õß = "SoleSurvivor";
-	inline static const std::string Î´Óê³ñçÑ = "BuckleUp";
-	inline static const std::string Ä©ÈÕ²Ğ±ø = "LeftBehind";
-	inline static const std::string »úÓöÖ®´° = "WindowsOfOpportunity";
-	inline static const std::string ¹û¶Ï·´»÷ = "DecisiveStrike";
-	inline static const std::string Ã«¹Çã¤È» = "Spine_Chill";
-	inline static const std::string Æø³¡Ê§Õæ = "Distortion";
-	inline static const std::string ÓÀ²»ÑÔÆú = "Tenacity";
-	inline static const std::string ÇóÉúÓû = "S43P02";
-	inline static const std::string Ô¡Ñª³å´Ì = "S36P02";
-	inline static const std::string ÇåµÀ·ò = "S37P03";
-	inline static const std::string Ç±Á¦ÎŞÏŞ = "S34P01";
-	inline static const std::string Áé»êÊØÎÀ = "SoulGuard";
-	inline static const std::string »ÀÈ»Ò»ĞÂ = "S33P01";
-	inline static const std::string ±¬Õ¨µØÀ× = "S26P03";
-	inline static const std::string á÷ÁÔ¾­Ñé = "Small_Game";
-	inline static const std::string ÉúËÀÓë¹² = "WereGonnaLiveForever";
-	inline static const std::string °ÙÕÛ²»ÄÓ = "Resilience";
-	inline static const std::string ½Ã½¡ÉíÊÖ = "S43P01";
-	inline static const std::string ½ÃÕı´ëÊ© = "S29P02";
-	inline static const std::string ÆÆ»µÊÖ = "Saboteur";
-	inline static const std::string ÆÆ°¸ĞÄÇĞ = "StakeOut";
-	inline static const std::string Æíµ»_Ö¯ÍøÖ©Öë = "S41P01";
-	inline static const std::string Æíµ»_ÏÕ¶ñÎÚÑ» = "S45P01";
-	inline static const std::string ÎÈ²ÙÊ¤È¯ = "Open_Handed";
-	inline static const std::string ÇÔÌıÆ÷ = "S32P01";
-	inline static const std::string ´ğÒÉ½â»ó = "S37P01";
-	inline static const std::string ¾«ÑĞ°Ù²İ = "Botany_Knowledge";
-	inline static const std::string ¾­¾ÃÄÍÓÃ = "BuiltToLast";
-	inline static const std::string ¾ø¾³¶Ô²ß = "DesperateMeasures";
-	inline static const std::string ÀÏ±¾ĞĞ = "S43P03";
-	inline static const std::string ÁªñÇÖ÷Ñİ = "S38P02";
-	inline static const std::string ¾Û¾«»áÉñ = "S33P03";
-	inline static const std::string ¼ç¸ºÖØµ£ = "S45P03";
-	inline static const std::string ÉöÉÏÏÙËØ = "Adrenaline";
-	inline static const std::string Ê¤ÀûÏ²ÔÃ = "S44P02";
-	inline static const std::string ÍÑçÖÒ°Âí = "BoilOver";
-	inline static const std::string ×ÔÑ§³É²Å = "Autodidact";
-	inline static const std::string ×ÔÎÒ±£»¤ = "S25P03";
-	inline static const std::string ×ÔÎÒÁÆÓú = "Self_Care";
-	inline static const std::string Éá¼ºÎªÈË = "ForThePeople";
-	inline static const std::string ÈÙÒ«Ê±¿Ì = "S44P03";
-	inline static const std::string Ò©µ½²¡³ı = "Pharmacy";
-	inline static const std::string ĞîÊÆ´ı·¢ = "Poised";
-	inline static const std::string ¾¯½ä = "Alert";
-	inline static const std::string ¾¯Ì½Ö±¾õ = "DetectivesHunch";
-	inline static const std::string ÈÏ¶¨Ä¿±ê = "Fixated";
-	inline static const std::string Ö¤Ã÷×Ô¼º = "Prove_Thyself";
-	inline static const std::string ½÷É÷ÔğÈÎ = "S46P02";
-	inline static const std::string ±´¶ûÃÉÌØÖ®ÑÛ = "S44P01";
-	inline static const std::string µøå´¾çÇé = "S38P03";
-	inline static const std::string ×ªÒÆ×¢Òâ = "RedHerring";
-	inline static const std::string ºä¶¯Ñİ³ö = "S25P02";
-	inline static const std::string ÇáÈçºèÃ« = "Lightweight";
-	inline static const std::string ÇáÓ¯Ãô½İ = "Lithe";
-	inline static const std::string ÇáÓ¯Ã¨²½ = "S39P03";
-	inline static const std::string Ô¶¼û×¿Ê¶ = "Visionary";
-	inline static const std::string ÃÔÎí»ÛÑÛ = "S34P02";
-	inline static const std::string ÌÓÖ®Ø²Ø² = "Slippery_Meat";
-	inline static const std::string Ğ°ËîÖ®Á¦ = "S41P03";
-	inline static const std::string ¶¼ÊĞÉú´æ = "St";//Streetwise¸ÄÎªSt
-	inline static const std::string ĞÑĞÑ£¡£¡£¡ = "Wakeup";
-	inline static const std::string ¸Ö½îÌú¹Ç = "DeadHard";
-	inline static const std::string ¸ÖÌúÒâÖ¾ = "Iron_Will";
-	inline static const std::string ½õÄÒÃî¼Æ = "Ace_In_The_Hole";
-	inline static const std::string ¾µÓ°»ÃÏó = "S42P01";
-	inline static const std::string ÉÁ¹âµ¯ = "S27P02";
-	inline static const std::string ÒşÄäÖ®ÊÆ = "S41P02";
-	inline static const std::string ÄÑÒÔÖÃĞÅ = "This_Is_Not_Happening";
-	inline static const std::string ·ÇÕıÊ½µ÷²é = "OffTheRecord";
-	inline static const std::string ÁìĞäÈºĞÛ = "Leader";
-	inline static const std::string Âíµ½³É¹¦ = "WellMakeIt";
-	inline static const std::string »êÇ£ÃÎÈÆ = "ObjectOfObsession";
-	inline static const std::string ÏÊÑªÆõÔ¼ = "BloodPact";
-	inline static const std::string ÆëĞÄĞ­Á¦ = "BetterTogether";
+	{æ€æ‰‹::å¤¹å­ä¸»åŠ¨æŠ€èƒ½, L"å¤¹å­"},
+	{æ€æ‰‹::å°å®å½“ä¸»åŠ¨æŠ€èƒ½, L"å°å®å½“"},
+	{æ€æ‰‹::ç˜¸ç˜¸ä¸»åŠ¨æŠ€èƒ½, L"ç˜¸ç˜¸"},
+	{æ€æ‰‹::æŠ¤å£«ä¸»åŠ¨æŠ€èƒ½, L"æŠ¤å£«"},
+	{æ€æ‰‹::è¿ˆå”ä¸»åŠ¨æŠ€èƒ½, L"è¿ˆå”"},
+	{æ€æ‰‹::æå¥¶å¥¶ä¸»åŠ¨æŠ€èƒ½, L"æå¥¶å¥¶"},
+	{æ€æ‰‹::è€æ¨ä¸»åŠ¨æŠ€èƒ½, L"è€æ¨"},
+	{æ€æ‰‹::å…”å¦ˆä¸»åŠ¨æŠ€èƒ½, L"å…”å¦ˆ"},
+	{æ€æ‰‹::çš®è„¸ä¸»åŠ¨æŠ€èƒ½, L"çš®è„¸"},
+	{æ€æ‰‹::æ¢¦é­‡ä¸»åŠ¨æŠ€èƒ½, L"æ¢¦é­‡"},
+	{æ€æ‰‹::çŒªå¦¹ä¸»åŠ¨æŠ€èƒ½, L"çŒªå¦¹"},
+	{æ€æ‰‹::å°ä¸‘ä¸»åŠ¨æŠ€èƒ½, L"å°ä¸‘"},
+	{æ€æ‰‹::é›¶å¦¹ä¸»åŠ¨æŠ€èƒ½, L"é›¶å¦¹"},
+	{æ€æ‰‹::å†›å›¢ä¸»åŠ¨æŠ€èƒ½, L"å†›å›¢"},
+	{æ€æ‰‹::åå¦ˆä¸»åŠ¨æŠ€èƒ½, L"åå¦ˆ"},
+	{æ€æ‰‹::é¬¼é¢ä¸»åŠ¨æŠ€èƒ½, L"é¬¼é¢"},
+	{æ€æ‰‹::é­”ç‹ä¸»åŠ¨æŠ€èƒ½, L"é­”ç‹"},
+	{æ€æ‰‹::é¬¼æ­¦å£«ä¸»åŠ¨æŠ€èƒ½, L"é¬¼æ­¦å£«"},
+	{æ€æ‰‹::æŠ¢æ‰‹ä¸»åŠ¨æŠ€èƒ½, L"æŠ¢æ‰‹"},
+	{æ€æ‰‹::ä¸‰è§’å¤´ä¸»åŠ¨æŠ€èƒ½, L"ä¸‰è§’å¤´"},
+	{æ€æ‰‹::æ¯é­”ä¸»åŠ¨æŠ€èƒ½, L"æ¯é­”ä¸»"},
+	{æ€æ‰‹::è¿ä½“å©´ä¸»åŠ¨æŠ€èƒ½, L"è¿ä½“å©´"},
+	{æ€æ‰‹::å“¥å“¥ä¸»åŠ¨æŠ€èƒ½, L"å“¥å“¥"},
+	{æ€æ‰‹::è¿½å‡»è€…ä¸»åŠ¨æŠ€èƒ½, L"è¿½å‡»è€…"},
+	{æ€æ‰‹::é’‰å­å¤´ä¸»åŠ¨æŠ€èƒ½, L"é’‰å­å¤´"},
+	{æ€æ‰‹::é¸Ÿå§ä¸»åŠ¨æŠ€èƒ½, L"é¸Ÿå§"},
+	{æ€æ‰‹::è´å­ä¸»åŠ¨æŠ€èƒ½, L"è´å­"},
+	{æ€æ‰‹::å½±é­”ä¸»åŠ¨æŠ€èƒ½, L"å½±é­”"},
+	{æ€æ‰‹::å¨æ–¯å…‹ä¸»åŠ¨æŠ€èƒ½, L"å¨æ–¯å…‹"},
+	{æ€æ‰‹::æ¶éª‘å£«ä¸»åŠ¨æŠ€èƒ½, L"æ¶éª‘å£«"},
+	{æ€æ‰‹::ç™½éª¨å•†äººä¸»åŠ¨æŠ€èƒ½, L"ç™½éª¨å•†äºº"},
+	{æ€æ‰‹::å¥‡ç‚¹ä¸»åŠ¨æŠ€èƒ½, L"å¥‡ç‚¹"},
+	{æ€æ‰‹::å¼‚å½¢ä¸»åŠ¨æŠ€èƒ½, L"å¼‚å½¢"},
+	{æ€æ‰‹::å¥½å­©å­ä¸»åŠ¨æŠ€èƒ½, L"å¥½å­©å­"},
+	{æ€æ‰‹::æœªçŸ¥æ¶ç‰©ä¸»åŠ¨æŠ€èƒ½, L"æœªçŸ¥æ¶ç‰©"},
+	{æ€æ‰‹::å·«å¦–ä¸»åŠ¨æŠ€èƒ½, L"å·«å¦–"},
+	{æ€æ‰‹::å¾·å¤æ‹‰ä¸»åŠ¨æŠ€èƒ½, L"å¾·å¤æ‹‰"},
+	{æ€æ‰‹::æ½˜çº¢ä¸»åŠ¨æŠ€èƒ½, L"æ½˜çº¢"},
+	{æ€æ‰‹::é‡‘æœ¨ç ”ä¸»åŠ¨æŠ€èƒ½, L"é‡‘æœ¨ç ”"},
+	{æ€æ‰‹::è€ç™»ä¸»åŠ¨æŠ€èƒ½, L"è€ç™»"}
 
 };
 
 
-struct É±ÊÖÅäÖÃ¼¼ÄÜ {
+struct å¹¸å­˜è€…é…ç½®æŠ€èƒ½ {
+	inline static const std::string ä¸æƒœä¸€åˆ‡1 = "";
+	inline static const std::string ä¸æƒœä¸€åˆ‡2 = "AnyMeansNecessary";
+	inline static const std::string ä¸ç—›ä¸ç—’ = "NoMither";
+	inline static const std::string ä¸ç¥¥é¢„æ„Ÿ = "Premonition";
+	inline static const std::string ä¸æˆ‘å…±èˆ = "Dance_with_me";
+	inline static const std::string ä¸œå±±å†èµ· = "S26P02";
+	inline static const std::string ä¸ºç”Ÿè€Œç”Ÿ = "S37P02";
+	inline static const std::string äº¡çˆ¶è­¦è¨€ = "S30P01";
+	inline static const std::string äº¤ç¨¿æ—¥ = "S40P03";
+	inline static const std::string äººä¹‹å‹‡æ°” = "TheMettleOfMan";
+	inline static const std::string ä¼¼æ›¾ç›¸è¯† = "Deja_Vu";
+	inline static const std::string ä½è°ƒè¡Œäº‹ = "S32P03";
+	inline static const std::string ä½™å…‰é•¿å­˜ = "S31P02";
+	inline static const std::string ä¿å§† = "Babysitter";
+	inline static const std::string å…‰æ˜å‹‡å£« = "S40P01";
+	inline static const std::string å…‹æœéš¾å…³ = "S29P01";
+	inline static const std::string å…µä¸åŒè¯ˆ = "S24P02";
+	inline static const std::string å†…åœ¨ä¸“æ³¨ = "S31P01";
+	inline static const std::string å†…å¿ƒä¹‹åŠ› = "InnerStrength";
+	inline static const std::string å†²åˆºçˆ†å‘ = "Sprint_Burst";
+	inline static const std::string åˆ†å´©ç¦»æ = "Breakdown";
+	inline static const std::string åˆ‡å‹¿ä¼¤å®³ = "S46P01";
+	inline static const std::string åŠ«åä½™ç”Ÿ = "AfterCare";
+	inline static const std::string å‹‡å¾€ç›´å‰ = "HeadOn";
+	inline static const std::string åŒ–å­¦é™·é˜± = "S39P02";
+	inline static const std::string åƒé‡Œçœ¼ = "S28P01";
+	inline static const std::string å³å…´è¡¨æ¼” = "S38P01";
+	inline static const std::string å‹æŠ‘åŒç›Ÿ = "RepressedAlliance";
+	inline static const std::string å‹è°Šèµ› = "S35P02";
+	inline static const std::string ååˆ¶ä¹‹åŠ› = "S26P01";
+	inline static const std::string å„è‡ªä¸ºå®‰ = "S45P02";
+	inline static const std::string åŒå¿—æƒ…è°Š = "Camaraderie";
+	inline static const std::string åŒæ— = "Kindred";
+	inline static const std::string åŒç”Ÿå…±æ­» = "No_One_Left_Behind";
+	inline static const std::string åŸæ¸¸è¯—äººæ¿€åŠ± = "S42P02";
+	inline static const std::string å’¬ç´§ç‰™å…³ = "S27P01";
+	inline static const std::string å–„æœ‰å–„æŠ¥ = "Deliverance";
+	inline static const std::string å›¢ç»“ä¸€è‡´ = "Solidarity";
+	inline static const std::string å›¢é˜Ÿåˆä½œ_äºŒäººä¹‹åŠ› = "S35P03";
+	inline static const std::string å›¢é˜Ÿåˆä½œ_å…¨ä½“éšè”½ = "S36P03";
+	inline static const std::string åšä¸å¯æ‘§ = "SelfSufficient";
+	inline static const std::string å£°ä¸œå‡»è¥¿ = "Diversion";
+	inline static const std::string å¤è‹ä¹‹é£ = "SecondWind";
+	inline static const std::string å¥½è¿ä¼šä¼ æŸ“ = "Up_The_Ante";
+	inline static const std::string å®ˆå¤œäºº = "Vigil";
+	inline static const std::string å®‰æŠšç”Ÿçµ = "Calm_Spirit";
+	inline static const std::string å®šå¿ƒä¸¸ = "S33P02";
+	inline static const std::string å¯¹ç­–æ²»ç–— = "S32P02";
+	inline static const std::string å¸Œæœ›ä¹‹ç¿¼ = "Hope";
+	inline static const std::string å¹•åç©å®¶ = "S36P01";
+	inline static const std::string å¹³ç¨³ç€é™† = "Balanced_Landing";
+	inline static const std::string å¹¶è¡Œè¿›å±• = "FlipFlop";
+	inline static const std::string å¹¸è¿å–˜æ¯ = "LuckyBreak";
+	inline static const std::string å¹¸è¿æ˜Ÿ = "S39P01";
+	inline static const std::string å¼ºåŠ›æŒ£æ‰ = "S24P03";
+	inline static const std::string å¼ºç›—ç›´è§‰ = "Plunderers_Instinct";
+	inline static const std::string å½“æœºç«‹æ–­ = "S35P01";
+	inline static const std::string å¿ƒçµå…±é¸£ = "Empathy";
+	inline static const std::string å¿ƒé™çœ¼æ˜ = "S42P03";
+	inline static const std::string å¿«é€Ÿååº” = "S46P03";
+	inline static const std::string å¿«é€Ÿç­–ç•¥ = "S34P03";
+	inline static const std::string æ€¥äºæ±‚æˆ = "S31P03";
+	inline static const std::string æ€¥é€Ÿé™è°§ = "QuickQuiet";
+	inline static const std::string æ©èµ_æŒ‡æ•°å¢é•¿ = "S29P03";
+	inline static const std::string æ©èµ_æ˜äº® = "S40P02";
+	inline static const std::string æ©èµ_æš—å½±æ­¥ = "S28P03";
+	inline static const std::string æ©èµ_æ²»ç–—ä¹‹ç¯ = "S28P02";
+	inline static const std::string æ©èµ_é»‘æš—ç†è®º = "S30P03";
+	inline static const std::string æ„ŸåŒèº«å— = "S30P02";
+	inline static const std::string æˆåŠŸæ·å¾„ = "S25P01";
+	inline static const std::string æŠ€æœ¯å‘˜ = "Technician";
+	inline static const std::string æŒ£è„±æ¿€åŠ± = "Breakout";
+	inline static const std::string æºæ‰‹åˆä½œ = "Bond";
+	inline static const std::string æ–°äººç²¾ç¥ = "S27P03";
+	inline static const std::string æ—¶ä¸æˆ‘å¾… = "BorrowedTime";
+	inline static const std::string æ˜å¯Ÿç§‹æ¯« = "S24P01";
+	inline static const std::string æš—é»‘æ„ŸçŸ¥ = "Dark_Sense";
+	inline static const std::string æš´èµ°æ— = "Urban_Evasion";
+	inline static const std::string æœ€åçš„ç”Ÿè¿˜è€… = "SoleSurvivor";
+	inline static const std::string æœªé›¨ç»¸ç¼ª = "BuckleUp";
+	inline static const std::string æœ«æ—¥æ®‹å…µ = "LeftBehind";
+	inline static const std::string æœºé‡ä¹‹çª— = "WindowsOfOpportunity";
+	inline static const std::string æœæ–­åå‡» = "DecisiveStrike";
+	inline static const std::string æ¯›éª¨æ‚šç„¶ = "Spine_Chill";
+	inline static const std::string æ°”åœºå¤±çœŸ = "Distortion";
+	inline static const std::string æ°¸ä¸è¨€å¼ƒ = "Tenacity";
+	inline static const std::string æ±‚ç”Ÿæ¬² = "S43P02";
+	inline static const std::string æµ´è¡€å†²åˆº = "S36P02";
+	inline static const std::string æ¸…é“å¤« = "S37P03";
+	inline static const std::string æ½œåŠ›æ— é™ = "S34P01";
+	inline static const std::string çµé­‚å®ˆå« = "SoulGuard";
+	inline static const std::string ç„•ç„¶ä¸€æ–° = "S33P01";
+	inline static const std::string çˆ†ç‚¸åœ°é›· = "S26P03";
+	inline static const std::string ç‹©çŒç»éªŒ = "Small_Game";
+	inline static const std::string ç”Ÿæ­»ä¸å…± = "WereGonnaLiveForever";
+	inline static const std::string ç™¾æŠ˜ä¸æŒ  = "Resilience";
+	inline static const std::string çŸ«å¥èº«æ‰‹ = "S43P01";
+	inline static const std::string çŸ«æ­£æªæ–½ = "S29P02";
+	inline static const std::string ç ´åæ‰‹ = "Saboteur";
+	inline static const std::string ç ´æ¡ˆå¿ƒåˆ‡ = "StakeOut";
+	inline static const std::string ç¥ˆç¥·_ç»‡ç½‘èœ˜è›› = "S41P01";
+	inline static const std::string ç¥ˆç¥·_é™©æ¶ä¹Œé¸¦ = "S45P01";
+	inline static const std::string ç¨³æ“èƒœåˆ¸ = "Open_Handed";
+	inline static const std::string çªƒå¬å™¨ = "S32P01";
+	inline static const std::string ç­”ç–‘è§£æƒ‘ = "S37P01";
+	inline static const std::string ç²¾ç ”ç™¾è‰ = "Botany_Knowledge";
+	inline static const std::string ç»ä¹…è€ç”¨ = "BuiltToLast";
+	inline static const std::string ç»å¢ƒå¯¹ç­– = "DesperateMeasures";
+	inline static const std::string è€æœ¬è¡Œ = "S43P03";
+	inline static const std::string è”è¢‚ä¸»æ¼” = "S38P02";
+	inline static const std::string èšç²¾ä¼šç¥ = "S33P03";
+	inline static const std::string è‚©è´Ÿé‡æ‹… = "S45P03";
+	inline static const std::string è‚¾ä¸Šè…ºç´  = "Adrenaline";
+	inline static const std::string èƒœåˆ©å–œæ‚¦ = "S44P02";
+	inline static const std::string è„±ç¼°é‡é©¬ = "BoilOver";
+	inline static const std::string è‡ªå­¦æˆæ‰ = "Autodidact";
+	inline static const std::string è‡ªæˆ‘ä¿æŠ¤ = "S25P03";
+	inline static const std::string è‡ªæˆ‘ç–—æ„ˆ = "Self_Care";
+	inline static const std::string èˆå·±ä¸ºäºº = "ForThePeople";
+	inline static const std::string è£è€€æ—¶åˆ» = "S44P03";
+	inline static const std::string è¯åˆ°ç—…é™¤ = "Pharmacy";
+	inline static const std::string è“„åŠ¿å¾…å‘ = "Poised";
+	inline static const std::string è­¦æˆ’ = "Alert";
+	inline static const std::string è­¦æ¢ç›´è§‰ = "DetectivesHunch";
+	inline static const std::string è®¤å®šç›®æ ‡ = "Fixated";
+	inline static const std::string è¯æ˜è‡ªå·± = "Prove_Thyself";
+	inline static const std::string è°¨æ…è´£ä»» = "S46P02";
+	inline static const std::string è´å°”è’™ç‰¹ä¹‹çœ¼ = "S44P01";
+	inline static const std::string è·Œå®•å‰§æƒ… = "S38P03";
+	inline static const std::string è½¬ç§»æ³¨æ„ = "RedHerring";
+	inline static const std::string è½°åŠ¨æ¼”å‡º = "S25P02";
+	inline static const std::string è½»å¦‚é¸¿æ¯› = "Lightweight";
+	inline static const std::string è½»ç›ˆæ•æ· = "Lithe";
+	inline static const std::string è½»ç›ˆçŒ«æ­¥ = "S39P03";
+	inline static const std::string è¿œè§å“è¯† = "Visionary";
+	inline static const std::string è¿·é›¾æ…§çœ¼ = "S34P02";
+	inline static const std::string é€ƒä¹‹å¤­å¤­ = "Slippery_Meat";
+	inline static const std::string é‚ªç¥Ÿä¹‹åŠ› = "S41P03";
+	inline static const std::string éƒ½å¸‚ç”Ÿå­˜ = "St";//Streetwiseæ”¹ä¸ºSt
+	inline static const std::string é†’é†’ï¼ï¼ï¼ = "Wakeup";
+	inline static const std::string é’¢ç­‹é“éª¨ = "DeadHard";
+	inline static const std::string é’¢é“æ„å¿— = "Iron_Will";
+	inline static const std::string é”¦å›Šå¦™è®¡ = "Ace_In_The_Hole";
+	inline static const std::string é•œå½±å¹»è±¡ = "S42P01";
+	inline static const std::string é—ªå…‰å¼¹ = "S27P02";
+	inline static const std::string éšåŒ¿ä¹‹åŠ¿ = "S41P02";
+	inline static const std::string éš¾ä»¥ç½®ä¿¡ = "This_Is_Not_Happening";
+	inline static const std::string éæ­£å¼è°ƒæŸ¥ = "OffTheRecord";
+	inline static const std::string é¢†è¢–ç¾¤é›„ = "Leader";
+	inline static const std::string é©¬åˆ°æˆåŠŸ = "WellMakeIt";
+	inline static const std::string é­‚ç‰µæ¢¦ç»• = "ObjectOfObsession";
+	inline static const std::string é²œè¡€å¥‘çº¦ = "BloodPact";
+	inline static const std::string é½å¿ƒååŠ› = "BetterTogether";
 
-	inline static const std::string Ğ¡³ó¿Ö¾åÖ¢ = "Coulrophobia";
-	inline static const std::string Ñ¹ÆÈĞÔÆø³¡ = "OverwhelmingPresence";
-	inline static const std::string ¶ñÁéµÍÓï = "Whispers";
-	inline static const std::string ËÀËø = "K25P01";
-	inline static const std::string ²»Çü²»ÄÓ = "Unrelenting";
-	inline static const std::string ÁËÈçÖ¸ÕÆ = "Surveillance";
-	inline static const std::string ÈËĞÔÌ°À· = "K37P02";
-	inline static const std::string ÈËÈâÉÕ¿¾ = "BBQAndChilli";
-	inline static const std::string ×ö³öÄãµÄÑ¡Ôñ = "MakeYourChoice";
-	inline static const std::string ¹âÃ÷Ö®ÑÛ = "Lightborn";
-	inline static const std::string Àä¿áÖ®Óµ = "K26P01";
-	inline static const std::string	¾ëµ¡Ö®´¥ = "K36P02";
-	inline static const std::string »÷µ¹³ö¾Ö = "InTheDark";
-	inline static const std::string ÇĞ·ôÖ®Í´ = "K22P02";
-	inline static const std::string ¶òÖä_²»ËÀ = "HexUndying";
-	inline static const std::string ¶òÖä_ÒÔÑÀ»¹ÑÀ = "K34P01";
-	inline static const std::string ¶òÖä_ÖÚÉú½Ô¿à = "K39P01";
-	inline static const std::string ¶òÖä_ÓàºÛ = "K26P03";
-	inline static const std::string ¶òÖä_ÍÌÊÉÏ£Íû = "Hex_Devour_Hope";
-	inline static const std::string ¶òÖä_±¯²ÒÃüÔË = "K37P01";
-	inline static const std::string ¶òÖä_³Í½ä = "HexRetribution";
-	inline static const std::string ¶òÖä_»ÙÃğ = "Hex_Ruin";
-	inline static const std::string ¶òÖä_Ò¡ÀºÇú = "Hex_HuntressLullaby";
-	inline static const std::string ¶òÖä_ÁÔÉ±ìåÆø = "Hex_Thrill_Of_The_Hunt";
-	inline static const std::string ¶òÖä_ÍòÎï = "K25P02";
-	inline static const std::string ¶òÖä_Ö±ÃæºÚ°µ = "K30P02";
-	inline static const std::string ¶òÖä_µÚÈı·âÓ¡ = "Hex_The_Third_Seal";
-	inline static const std::string ¶òÖä_ÈºÌå¿ØÖÆ = "K23P02";
-	inline static const std::string ¶òÖä_ÄÖ¹íÖ®µØ = "Hex_HauntedGround";
-	inline static const std::string ¶òÖä_ÄÑÌÓÒ»ËÀ = "No_One_Escapes_Death";
-	inline static const std::string ¶òÖä_ÏÊÑª¶÷»İ = "HexBloodFavor";
-	inline static const std::string ¶òÖä_Ñ¹ÆÈĞÔÆø³¡ = "OverwhelmingPresence";
-	inline static const std::string ÓÑÒêÌì³¤µØ¾Ã = "K34P02";
-	inline static const std::string ßÑßÑ×÷Ïì = "K31P02";
-	inline static const std::string ´­Ãù¸ĞÖª = "Stridor";
-	inline static const std::string ÊÈÑªĞ×ÊŞ = "BeastOfPrey";
-	inline static const std::string ¶Ú»ıÕß = "K22P01";
-	inline static const std::string »ùÒòËø = "K32P01";
-	inline static const std::string ´ó·¢À×öª = "K38P01";
-	inline static const std::string ÌìÔÖ¹³×Ó_¹ô×ÓÊÖµÄ°ÑÏ· = "HangmansTrick";
-	inline static const std::string ÌìÔÖ¹³×Ó_¿ñÅ­Ö®³± = "K27P01";
-	inline static const std::string ÌìÔÖ¹³×Ó_Í´¿à¹²Ãù = "K26P02";
-	inline static const std::string ÌìÔÖ¹³×Ó_Í´¿àÀñÎï = "K25P03";
-	inline static const std::string ÌìÔÖ¹³×Ó_¾â³İÂŞÅÌ = "K38P02";
-	inline static const std::string ÌìÔÖ¹³×Ó_¹íÄ§Éñíè = "Monstrous_Shrine";
-	inline static const std::string Ê§Ğ§¿ª¹Ø = "DeadMansSwitch";
-	inline static const std::string ºÃÏ·¿ª³¡ = "K31P01";
-	inline static const std::string ¸»À¼¿ËÁÖÖ®ËÀ = "FranklinsLoss";
-	inline static const std::string Ç¿ÖÆâã»Ú = "ForcedPenance";
-	inline static const std::string ¹¤½³ = "Tinkerer";
-	inline static const std::string ¾ŞÁúÖ®ÎÕ = "DragonsGrip";
-	inline static const std::string ÒìĞÎ±¾ÄÜ = "K33P03";
-	inline static const std::string ĞÄ°µÆø°Á = "K36P03";
-	inline static const std::string ĞÄ¾ªÈâÌø = "pop_goes_the_weasel";
-	inline static const std::string Å­»ğÖĞÉÕ = "FireUp";
-	inline static const std::string Ô¹Æø³åÌì = "Rancor";
-	inline static const std::string ¿Ö¾å´«È¾ = "InfectiousFright";
-	inline static const std::string ¿Ö»Å½µÁÙ = "Unnerving_Presence";
-	inline static const std::string ¿Ö¾åÊÍ·Å = "Distressing";
-	inline static const std::string ¶÷´Í½âÍÑ = "K22P03";
-	inline static const std::string ¾ªÏÕÕ½Àõ = "ThrillingTremors";
-	inline static const std::string ¸ĞÈ¾Ö®´¥ÊÖ = "K28P03";
-	inline static const std::string ¸ĞÖª¾õĞÑ = "K29P02";
-	inline static const std::string ²»ÒªÍæÅªÄãµÄÊ³Îï = "Play_With_Your_Food";
-	inline static const std::string ËùÏòÎŞµĞ = "Brutal_Strength";
-	inline static const std::string °Ñ×îºÃµÄÁôÔÚ×îºó = "Save_The_Best_For_Last";
-	inline static const std::string ÕÛÄ¥Â·¾¶ = "TrailofTorment";
-	inline static const std::string »¤Ê¿µÄºô»½ = "NurseCalling";
-	inline static const std::string ±¨Ó¦ = "Nemesis";
-	inline static const std::string Ö§ÅäÖ®Á¦ = "K37P03";
-	inline static const std::string ÎŞÒ»ĞÒÃâ = "K39P03";
-	inline static const std::string ÎŞ´¦¿É²Ø = "K30P01";
-	inline static const std::string ÎŞÇé·ç±© = "K27P03";
-	inline static const std::string ÎŞĞ§ = "K35P03";
-	inline static const std::string ÎŞÊø = "K35P01";
-	inline static const std::string ÎŞÂ·¿ÉÌÓ = "K23P03";
-	inline static const std::string ÎŞ¼£ = "K35P02";
-	inline static const std::string °µÒ¹Ö®Çç = "Shadowborn";
-	inline static const std::string ±©Å­Ô¹Áé = "SpiritFury";
-	inline static const std::string »úÆ÷Ñ§Ï° = "K32P03";
-	inline static const std::string ¸Ü¸ËĞ§Ó¦ = "K31P03";
-	inline static const std::string ĞÀÏ²Èô¿ñ = "Agitation";
-	inline static const std::string ĞªË¹µ×Àï = "K24P02";
-	inline static const std::string ËÀÍö¿Ö¾å = "Thanatophobia";
-	inline static const std::string ËÀÍöî¿°í = "Deathbound";
-	inline static const std::string ²ĞĞÄ = "ZanshinTactics";
-	inline static const std::string ²Ğ¿á½ûÖÆ = "CruelConfinement";
-	inline static const std::string ºÁ²»ÁôÇé = "K38P03";
-	inline static const std::string ÓÀºã½»Ö¯ = "K39P02";
-	inline static const std::string Ï´¶ú¹§Ìı = "ImAllEars";
-	inline static const std::string äÎÃğÖ®¹â = "Dying_Light";
-	inline static const std::string ÑÌÏûÔÆÉ¢ = "K28P01";
-	inline static const std::string ±¬·¢ = "K24P03";
-	inline static const std::string ÀÎÀÎ½ôÎÕ = "Iron_Grasp";
-	inline static const std::string ÁÔÂ¹Õß = "Deerstalker";
-	inline static const std::string Íß½âÒâÖ¾ = "Mindbreaker";
-	inline static const std::string µçÓ¿ = "Surge";
-	inline static const std::string µçÁ¿³¬ÔØ = "GeneratorOvercharge";
-	inline static const std::string ·è¿ñÓÂÆø = "MadGrit";
-	inline static const std::string ¼²ËÙ²Ğ±© = "K33P02";
-	inline static const std::string Çî×·²»Éá = "Predator";
-	inline static const std::string ·ÛËéÏ£Íû = "BoonDestroyer";
-	inline static const std::string ÖÕ¾ÖÕ½Êõ = "K29P03";
-	inline static const std::string ÑÎË®ÕÙ»½ = "K27P02";
-	inline static const std::string ±àÖ¯¹²Ãù = "K36P01";
-	inline static const std::string ÄÍÁ¦³Ö¾Ã = "Enduring";
-	inline static const std::string ¸¯ÀÃ¸ÉÔ¤ = "CorruptIntervention";
-	inline static const std::string ÖÕ¼«ÎäÆ÷ = "K33P01";
-	inline static const std::string »¨ÑÔÇÉÓï = "Bamboozle";
-	inline static const std::string ¿àÉ¬µÍÓï = "Bitter_Murmur";
-	inline static const std::string ÑªÆø×·×Ù = "Bloodhound";
-	inline static const std::string ÖÂÃü×·×ÙÕß = "K24P01";
-	inline static const std::string ĞĞ¼à×øÊØ = "MonitorAndAbuse";
-	inline static const std::string ¼ÇÒäÓÌĞÂ = "RememberMe";
-	inline static const std::string Éè±¸·¢ÉÕÓÑ = "Gearhead";
-	inline static const std::string ÑªĞÈÓü³¤ = "BloodWarden";
-	inline static const std::string ³¬ÈËÀàÌåÄÜ = "K29P01";
-	inline static const std::string õÜõî²»Ç° = "K32P02";
-	inline static const std::string À±ÊÖÍÀ·ò = "Sloppy_Butcher";
-	inline static const std::string ×·ĞÇ¿ñ = "K23P01";
-	inline static const std::string ÅäºÏÊ§Ğ³ = "Discordance";
-	inline static const std::string ÅäÌ×µç³Ø = "K34P03";
-	inline static const std::string Ìú´¦Å® = "Ironmaiden";
-	inline static const std::string ½ûÖ¹ÒşÉí = "Insidious";
-	inline static const std::string ÁìµØÒâÊ¶ = "TerritorialImperative";
-	inline static const std::string ½¾°Á×Ô´ó = "K30P03";
-	inline static const std::string ¹íËî×·É± = "FurtiveChase";
-	inline static const std::string ¹íÑ»µıÓ° = "Spies_From_The_Shadows";
-	inline static const std::string ÏÊÑª»ØÏì = "BloodEcho";
-	inline static const std::string ºÚ°µÆôµÏ = "K28P02";
-	inline static const std::string ºÚ°µ·îÏ× = "DarkDevotion";
+};
 
-	inline static const std::string ÕĞÆ¸ÆôÊÂ = "K40P01";
-	inline static const std::string »ÃÓ°¿Ö¾å = "K40P02";
-	inline static const std::string Éè±¸¹ÊÕÏ = "K40P03";
+
+struct æ€æ‰‹é…ç½®æŠ€èƒ½ {
+
+	inline static const std::string å°ä¸‘ææƒ§ç—‡ = "Coulrophobia";
+	inline static const std::string å‹è¿«æ€§æ°”åœº = "OverwhelmingPresence";
+	inline static const std::string æ¶çµä½è¯­ = "Whispers";
+	inline static const std::string æ­»é” = "K25P01";
+	inline static const std::string ä¸å±ˆä¸æŒ  = "Unrelenting";
+	inline static const std::string äº†å¦‚æŒ‡æŒ = "Surveillance";
+	inline static const std::string äººæ€§è´ªå©ª = "K37P02";
+	inline static const std::string äººè‚‰çƒ§çƒ¤ = "BBQAndChilli";
+	inline static const std::string åšå‡ºä½ çš„é€‰æ‹© = "MakeYourChoice";
+	inline static const std::string å…‰æ˜ä¹‹çœ¼ = "Lightborn";
+	inline static const std::string å†·é…·ä¹‹æ‹¥ = "K26P01";
+	inline static const std::string	å€¦æ€ ä¹‹è§¦ = "K36P02";
+	inline static const std::string å‡»å€’å‡ºå±€ = "InTheDark";
+	inline static const std::string åˆ‡è‚¤ä¹‹ç—› = "K22P02";
+	inline static const std::string å„å’’_ä¸æ­» = "HexUndying";
+	inline static const std::string å„å’’_ä»¥ç‰™è¿˜ç‰™ = "K34P01";
+	inline static const std::string å„å’’_ä¼—ç”Ÿçš†è‹¦ = "K39P01";
+	inline static const std::string å„å’’_ä½™ç—• = "K26P03";
+	inline static const std::string å„å’’_åå™¬å¸Œæœ› = "Hex_Devour_Hope";
+	inline static const std::string å„å’’_æ‚²æƒ¨å‘½è¿ = "K37P01";
+	inline static const std::string å„å’’_æƒ©æˆ’ = "HexRetribution";
+	inline static const std::string å„å’’_æ¯ç­ = "Hex_Ruin";
+	inline static const std::string å„å’’_æ‘‡ç¯®æ›² = "Hex_HuntressLullaby";
+	inline static const std::string å„å’’_çŒæ€æˆ¾æ°” = "Hex_Thrill_Of_The_Hunt";
+	inline static const std::string å„å’’_ä¸‡ç‰© = "K25P02";
+	inline static const std::string å„å’’_ç›´é¢é»‘æš— = "K30P02";
+	inline static const std::string å„å’’_ç¬¬ä¸‰å°å° = "Hex_The_Third_Seal";
+	inline static const std::string å„å’’_ç¾¤ä½“æ§åˆ¶ = "K23P02";
+	inline static const std::string å„å’’_é—¹é¬¼ä¹‹åœ° = "Hex_HauntedGround";
+	inline static const std::string å„å’’_éš¾é€ƒä¸€æ­» = "No_One_Escapes_Death";
+	inline static const std::string å„å’’_é²œè¡€æ©æƒ  = "HexBloodFavor";
+	inline static const std::string å„å’’_å‹è¿«æ€§æ°”åœº = "OverwhelmingPresence";
+	inline static const std::string å‹è°Šå¤©é•¿åœ°ä¹… = "K34P02";
+	inline static const std::string å“å“ä½œå“ = "K31P02";
+	inline static const std::string å–˜é¸£æ„ŸçŸ¥ = "Stridor";
+	inline static const std::string å—œè¡€å‡¶å…½ = "BeastOfPrey";
+	inline static const std::string å›¤ç§¯è€… = "K22P01";
+	inline static const std::string åŸºå› é” = "K32P01";
+	inline static const std::string å¤§å‘é›·éœ† = "K38P01";
+	inline static const std::string å¤©ç¾é’©å­_åˆ½å­æ‰‹çš„æŠŠæˆ = "HangmansTrick";
+	inline static const std::string å¤©ç¾é’©å­_ç‹‚æ€’ä¹‹æ½® = "K27P01";
+	inline static const std::string å¤©ç¾é’©å­_ç—›è‹¦å…±é¸£ = "K26P02";
+	inline static const std::string å¤©ç¾é’©å­_ç—›è‹¦ç¤¼ç‰© = "K25P03";
+	inline static const std::string å¤©ç¾é’©å­_é”¯é½¿ç½—ç›˜ = "K38P02";
+	inline static const std::string å¤©ç¾é’©å­_é¬¼é­”ç¥é¾› = "Monstrous_Shrine";
+	inline static const std::string å¤±æ•ˆå¼€å…³ = "DeadMansSwitch";
+	inline static const std::string å¥½æˆå¼€åœº = "K31P01";
+	inline static const std::string å¯Œå…°å…‹æ—ä¹‹æ­» = "FranklinsLoss";
+	inline static const std::string å¼ºåˆ¶å¿æ‚” = "ForcedPenance";
+	inline static const std::string å·¥åŒ  = "Tinkerer";
+	inline static const std::string å·¨é¾™ä¹‹æ¡ = "DragonsGrip";
+	inline static const std::string å¼‚å½¢æœ¬èƒ½ = "K33P03";
+	inline static const std::string å¿ƒæš—æ°”å‚² = "K36P03";
+	inline static const std::string å¿ƒæƒŠè‚‰è·³ = "pop_goes_the_weasel";
+	inline static const std::string æ€’ç«ä¸­çƒ§ = "FireUp";
+	inline static const std::string æ€¨æ°”å†²å¤© = "Rancor";
+	inline static const std::string ææƒ§ä¼ æŸ“ = "InfectiousFright";
+	inline static const std::string ææ…Œé™ä¸´ = "Unnerving_Presence";
+	inline static const std::string ææƒ§é‡Šæ”¾ = "Distressing";
+	inline static const std::string æ©èµè§£è„± = "K22P03";
+	inline static const std::string æƒŠé™©æˆ˜æ — = "ThrillingTremors";
+	inline static const std::string æ„ŸæŸ“ä¹‹è§¦æ‰‹ = "K28P03";
+	inline static const std::string æ„ŸçŸ¥è§‰é†’ = "K29P02";
+	inline static const std::string ä¸è¦ç©å¼„ä½ çš„é£Ÿç‰© = "Play_With_Your_Food";
+	inline static const std::string æ‰€å‘æ— æ•Œ = "Brutal_Strength";
+	inline static const std::string æŠŠæœ€å¥½çš„ç•™åœ¨æœ€å = "Save_The_Best_For_Last";
+	inline static const std::string æŠ˜ç£¨è·¯å¾„ = "TrailofTorment";
+	inline static const std::string æŠ¤å£«çš„å‘¼å”¤ = "NurseCalling";
+	inline static const std::string æŠ¥åº” = "Nemesis";
+	inline static const std::string æ”¯é…ä¹‹åŠ› = "K37P03";
+	inline static const std::string æ— ä¸€å¹¸å… = "K39P03";
+	inline static const std::string æ— å¤„å¯è— = "K30P01";
+	inline static const std::string æ— æƒ…é£æš´ = "K27P03";
+	inline static const std::string æ— æ•ˆ = "K35P03";
+	inline static const std::string æ— æŸ = "K35P01";
+	inline static const std::string æ— è·¯å¯é€ƒ = "K23P03";
+	inline static const std::string æ— è¿¹ = "K35P02";
+	inline static const std::string æš—å¤œä¹‹æ™´ = "Shadowborn";
+	inline static const std::string æš´æ€’æ€¨çµ = "SpiritFury";
+	inline static const std::string æœºå™¨å­¦ä¹  = "K32P03";
+	inline static const std::string æ æ†æ•ˆåº” = "K31P03";
+	inline static const std::string æ¬£å–œè‹¥ç‹‚ = "Agitation";
+	inline static const std::string æ­‡æ–¯åº•é‡Œ = "K24P02";
+	inline static const std::string æ­»äº¡ææƒ§ = "Thanatophobia";
+	inline static const std::string æ­»äº¡ç¾ç»Š = "Deathbound";
+	inline static const std::string æ®‹å¿ƒ = "ZanshinTactics";
+	inline static const std::string æ®‹é…·ç¦åˆ¶ = "CruelConfinement";
+	inline static const std::string æ¯«ä¸ç•™æƒ… = "K38P03";
+	inline static const std::string æ°¸æ’äº¤ç»‡ = "K39P02";
+	inline static const std::string æ´—è€³æ­å¬ = "ImAllEars";
+	inline static const std::string æ¹®ç­ä¹‹å…‰ = "Dying_Light";
+	inline static const std::string çƒŸæ¶ˆäº‘æ•£ = "K28P01";
+	inline static const std::string çˆ†å‘ = "K24P03";
+	inline static const std::string ç‰¢ç‰¢ç´§æ¡ = "Iron_Grasp";
+	inline static const std::string çŒé¹¿è€… = "Deerstalker";
+	inline static const std::string ç“¦è§£æ„å¿— = "Mindbreaker";
+	inline static const std::string ç”µæ¶Œ = "Surge";
+	inline static const std::string ç”µé‡è¶…è½½ = "GeneratorOvercharge";
+	inline static const std::string ç–¯ç‹‚å‹‡æ°” = "MadGrit";
+	inline static const std::string ç–¾é€Ÿæ®‹æš´ = "K33P02";
+	inline static const std::string ç©·è¿½ä¸èˆ = "Predator";
+	inline static const std::string ç²‰ç¢å¸Œæœ› = "BoonDestroyer";
+	inline static const std::string ç»ˆå±€æˆ˜æœ¯ = "K29P03";
+	inline static const std::string ç›æ°´å¬å”¤ = "K27P02";
+	inline static const std::string ç¼–ç»‡å…±é¸£ = "K36P01";
+	inline static const std::string è€åŠ›æŒä¹… = "Enduring";
+	inline static const std::string è…çƒ‚å¹²é¢„ = "CorruptIntervention";
+	inline static const std::string ç»ˆææ­¦å™¨ = "K33P01";
+	inline static const std::string èŠ±è¨€å·§è¯­ = "Bamboozle";
+	inline static const std::string è‹¦æ¶©ä½è¯­ = "Bitter_Murmur";
+	inline static const std::string è¡€æ°”è¿½è¸ª = "Bloodhound";
+	inline static const std::string è‡´å‘½è¿½è¸ªè€… = "K24P01";
+	inline static const std::string è¡Œç›‘åå®ˆ = "MonitorAndAbuse";
+	inline static const std::string è®°å¿†çŠ¹æ–° = "RememberMe";
+	inline static const std::string è®¾å¤‡å‘çƒ§å‹ = "Gearhead";
+	inline static const std::string è¡€è…¥ç‹±é•¿ = "BloodWarden";
+	inline static const std::string è¶…äººç±»ä½“èƒ½ = "K29P01";
+	inline static const std::string è¸¯èº…ä¸å‰ = "K32P02";
+	inline static const std::string è¾£æ‰‹å± å¤« = "Sloppy_Butcher";
+	inline static const std::string è¿½æ˜Ÿç‹‚ = "K23P01";
+	inline static const std::string é…åˆå¤±è° = "Discordance";
+	inline static const std::string é…å¥—ç”µæ±  = "K34P03";
+	inline static const std::string é“å¤„å¥³ = "Ironmaiden";
+	inline static const std::string ç¦æ­¢éšèº« = "Insidious";
+	inline static const std::string é¢†åœ°æ„è¯† = "TerritorialImperative";
+	inline static const std::string éª„å‚²è‡ªå¤§ = "K30P03";
+	inline static const std::string é¬¼ç¥Ÿè¿½æ€ = "FurtiveChase";
+	inline static const std::string é¬¼é¸¦è°å½± = "Spies_From_The_Shadows";
+	inline static const std::string é²œè¡€å›å“ = "BloodEcho";
+	inline static const std::string é»‘æš—å¯è¿ª = "K28P02";
+	inline static const std::string é»‘æš—å¥‰çŒ® = "DarkDevotion";
+
+	inline static const std::string æ‹›è˜å¯äº‹ = "K40P01";
+	inline static const std::string å¹»å½±ææƒ§ = "K40P02";
+	inline static const std::string è®¾å¤‡æ•…éšœ = "K40P03";
 
 };
 
 
 
-// ¼¼ÄÜ³£Á¿Óë±¾µØ»¯Ãû³ÆÓ³Éä
+// æŠ€èƒ½å¸¸é‡ä¸æœ¬åœ°åŒ–åç§°æ˜ å°„
 static const std::unordered_map<std::string, std::wstring> PeiZhiPerkNameMap = {
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Ğ¡³ó¿Ö¾åÖ¢, L"Ğ¡³ó¿Ö¾åÖ¢" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Ñ¹ÆÈĞÔÆø³¡, L"Ñ¹ÆÈĞÔÆø³¡" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶ñÁéµÍÓï, L"¶ñÁéµÍÓï" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ËÀËø, L"ËÀËø" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::²»Çü²»ÄÓ, L"²»Çü²»ÄÓ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÁËÈçÖ¸ÕÆ, L"ÁËÈçÖ¸ÕÆ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÈËĞÔÌ°À·, L"ÈËĞÔÌ°À·" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÈËÈâÉÕ¿¾, L"ÈËÈâÉÕ¿¾" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::×ö³öÄãµÄÑ¡Ôñ, L"×ö³öÄãµÄÑ¡Ôñ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¹âÃ÷Ö®ÑÛ, L"¹âÃ÷Ö®ÑÛ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Àä¿áÖ®Óµ, L"Àä¿áÖ®Óµ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¾ëµ¡Ö®´¥, L"¾ëµ¡Ö®´¥" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::»÷µ¹³ö¾Ö, L"»÷µ¹³ö¾Ö" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÇĞ·ôÖ®Í´, L"ÇĞ·ôÖ®Í´" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å°ä¸‘ææƒ§ç—‡, L"å°ä¸‘ææƒ§ç—‡" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å‹è¿«æ€§æ°”åœº, L"å‹è¿«æ€§æ°”åœº" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ¶çµä½è¯­, L"æ¶çµä½è¯­" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ­»é”, L"æ­»é”" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ä¸å±ˆä¸æŒ , L"ä¸å±ˆä¸æŒ " },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::äº†å¦‚æŒ‡æŒ, L"äº†å¦‚æŒ‡æŒ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::äººæ€§è´ªå©ª, L"äººæ€§è´ªå©ª" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::äººè‚‰çƒ§çƒ¤, L"äººè‚‰çƒ§çƒ¤" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::åšå‡ºä½ çš„é€‰æ‹©, L"åšå‡ºä½ çš„é€‰æ‹©" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å…‰æ˜ä¹‹çœ¼, L"å…‰æ˜ä¹‹çœ¼" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å†·é…·ä¹‹æ‹¥, L"å†·é…·ä¹‹æ‹¥" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å€¦æ€ ä¹‹è§¦, L"å€¦æ€ ä¹‹è§¦" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å‡»å€’å‡ºå±€, L"å‡»å€’å‡ºå±€" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::åˆ‡è‚¤ä¹‹ç—›, L"åˆ‡è‚¤ä¹‹ç—›" },
 
-	// ¶òÖäÀà¼¼ÄÜ
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_²»ËÀ, L"¶òÖä_²»ËÀ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_ÒÔÑÀ»¹ÑÀ, L"¶òÖä_ÒÔÑÀ»¹ÑÀ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_ÖÚÉú½Ô¿à, L"¶òÖä_ÖÚÉú½Ô¿à" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_ÓàºÛ, L"¶òÖä_ÓàºÛ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_ÍÌÊÉÏ£Íû, L"¶òÖä_ÍÌÊÉÏ£Íû" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_±¯²ÒÃüÔË, L"¶òÖä_±¯²ÒÃüÔË" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_³Í½ä, L"¶òÖä_³Í½ä" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_»ÙÃğ, L"¶òÖä_»ÙÃğ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_Ò¡ÀºÇú, L"¶òÖä_Ò¡ÀºÇú" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_ÁÔÉ±ìåÆø, L"¶òÖä_ÁÔÉ±ìåÆø" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_ÍòÎï, L"¶òÖä_ÍòÎï" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_Ö±ÃæºÚ°µ, L"¶òÖä_Ö±ÃæºÚ°µ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_µÚÈı·âÓ¡, L"¶òÖä_µÚÈı·âÓ¡" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_ÈºÌå¿ØÖÆ, L"¶òÖä_ÈºÌå¿ØÖÆ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_ÄÖ¹íÖ®µØ, L"¶òÖä_ÄÖ¹íÖ®µØ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_ÄÑÌÓÒ»ËÀ, L"¶òÖä_ÄÑÌÓÒ»ËÀ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶òÖä_ÏÊÑª¶÷»İ, L"¶òÖä_ÏÊÑª¶÷»İ" },
+	// å„å’’ç±»æŠ€èƒ½
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_ä¸æ­», L"å„å’’_ä¸æ­»" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_ä»¥ç‰™è¿˜ç‰™, L"å„å’’_ä»¥ç‰™è¿˜ç‰™" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_ä¼—ç”Ÿçš†è‹¦, L"å„å’’_ä¼—ç”Ÿçš†è‹¦" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_ä½™ç—•, L"å„å’’_ä½™ç—•" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_åå™¬å¸Œæœ›, L"å„å’’_åå™¬å¸Œæœ›" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_æ‚²æƒ¨å‘½è¿, L"å„å’’_æ‚²æƒ¨å‘½è¿" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_æƒ©æˆ’, L"å„å’’_æƒ©æˆ’" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_æ¯ç­, L"å„å’’_æ¯ç­" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_æ‘‡ç¯®æ›², L"å„å’’_æ‘‡ç¯®æ›²" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_çŒæ€æˆ¾æ°”, L"å„å’’_çŒæ€æˆ¾æ°”" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_ä¸‡ç‰©, L"å„å’’_ä¸‡ç‰©" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_ç›´é¢é»‘æš—, L"å„å’’_ç›´é¢é»‘æš—" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_ç¬¬ä¸‰å°å°, L"å„å’’_ç¬¬ä¸‰å°å°" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_ç¾¤ä½“æ§åˆ¶, L"å„å’’_ç¾¤ä½“æ§åˆ¶" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_é—¹é¬¼ä¹‹åœ°, L"å„å’’_é—¹é¬¼ä¹‹åœ°" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_éš¾é€ƒä¸€æ­», L"å„å’’_éš¾é€ƒä¸€æ­»" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å„å’’_é²œè¡€æ©æƒ , L"å„å’’_é²œè¡€æ©æƒ " },
 
-	// ÌìÔÖ¹³×ÓÀà¼¼ÄÜ
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÌìÔÖ¹³×Ó_¹ô×ÓÊÖµÄ°ÑÏ·, L"ÌìÔÖ¹³×Ó_¹ô×ÓÊÖµÄ°ÑÏ·" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÌìÔÖ¹³×Ó_¿ñÅ­Ö®³±, L"ÌìÔÖ¹³×Ó_¿ñÅ­Ö®³±" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÌìÔÖ¹³×Ó_Í´¿à¹²Ãù, L"ÌìÔÖ¹³×Ó_Í´¿à¹²Ãù" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÌìÔÖ¹³×Ó_Í´¿àÀñÎï, L"ÌìÔÖ¹³×Ó_Í´¿àÀñÎï" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÌìÔÖ¹³×Ó_¾â³İÂŞÅÌ, L"ÌìÔÖ¹³×Ó_¾â³İÂŞÅÌ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÌìÔÖ¹³×Ó_¹íÄ§Éñíè, L"ÌìÔÖ¹³×Ó_¹íÄ§Éñíè" },
+	// å¤©ç¾é’©å­ç±»æŠ€èƒ½
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¤©ç¾é’©å­_åˆ½å­æ‰‹çš„æŠŠæˆ, L"å¤©ç¾é’©å­_åˆ½å­æ‰‹çš„æŠŠæˆ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¤©ç¾é’©å­_ç‹‚æ€’ä¹‹æ½®, L"å¤©ç¾é’©å­_ç‹‚æ€’ä¹‹æ½®" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¤©ç¾é’©å­_ç—›è‹¦å…±é¸£, L"å¤©ç¾é’©å­_ç—›è‹¦å…±é¸£" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¤©ç¾é’©å­_ç—›è‹¦ç¤¼ç‰©, L"å¤©ç¾é’©å­_ç—›è‹¦ç¤¼ç‰©" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¤©ç¾é’©å­_é”¯é½¿ç½—ç›˜, L"å¤©ç¾é’©å­_é”¯é½¿ç½—ç›˜" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¤©ç¾é’©å­_é¬¼é­”ç¥é¾›, L"å¤©ç¾é’©å­_é¬¼é­”ç¥é¾›" },
 
-	// ÆäËû¼¼ÄÜ
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÓÑÒêÌì³¤µØ¾Ã, L"ÓÑÒêÌì³¤µØ¾Ã" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ßÑßÑ×÷Ïì, L"ßÑßÑ×÷Ïì" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::´­Ãù¸ĞÖª, L"´­Ãù¸ĞÖª" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÊÈÑªĞ×ÊŞ, L"ÊÈÑªĞ×ÊŞ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶Ú»ıÕß, L"¶Ú»ıÕß" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::»ùÒòËø, L"»ùÒòËø" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::´ó·¢À×öª, L"´ó·¢À×öª" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Ê§Ğ§¿ª¹Ø, L"Ê§Ğ§¿ª¹Ø" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ºÃÏ·¿ª³¡, L"ºÃÏ·¿ª³¡" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¸»À¼¿ËÁÖÖ®ËÀ, L"¸»À¼¿ËÁÖÖ®ËÀ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Ç¿ÖÆâã»Ú, L"Ç¿ÖÆâã»Ú" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¹¤½³, L"¹¤½³" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¾ŞÁúÖ®ÎÕ, L"¾ŞÁúÖ®ÎÕ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÒìĞÎ±¾ÄÜ, L"ÒìĞÎ±¾ÄÜ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ĞÄ°µÆø°Á, L"ĞÄ°µÆø°Á" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ĞÄ¾ªÈâÌø, L"ĞÄ¾ªÈâÌø" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Å­»ğÖĞÉÕ, L"Å­»ğÖĞÉÕ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Ô¹Æø³åÌì, L"Ô¹Æø³åÌì" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¿Ö¾å´«È¾, L"¿Ö¾å´«È¾" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¿Ö»Å½µÁÙ, L"¿Ö»Å½µÁÙ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¿Ö¾åÊÍ·Å, L"¿Ö¾åÊÍ·Å" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¶÷´Í½âÍÑ, L"¶÷´Í½âÍÑ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¾ªÏÕÕ½Àõ, L"¾ªÏÕÕ½Àõ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¸ĞÈ¾Ö®´¥ÊÖ, L"¸ĞÈ¾Ö®´¥ÊÖ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¸ĞÖª¾õĞÑ, L"¸ĞÖª¾õĞÑ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::²»ÒªÍæÅªÄãµÄÊ³Îï, L"²»ÒªÍæÅªÄãµÄÊ³Îï" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ËùÏòÎŞµĞ, L"ËùÏòÎŞµĞ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::°Ñ×îºÃµÄÁôÔÚ×îºó, L"°Ñ×îºÃµÄÁôÔÚ×îºó" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÕÛÄ¥Â·¾¶, L"ÕÛÄ¥Â·¾¶" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::»¤Ê¿µÄºô»½, L"»¤Ê¿µÄºô»½" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::±¨Ó¦, L"±¨Ó¦" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Ö§ÅäÖ®Á¦, L"Ö§ÅäÖ®Á¦" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÎŞÒ»ĞÒÃâ, L"ÎŞÒ»ĞÒÃâ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÎŞ´¦¿É²Ø, L"ÎŞ´¦¿É²Ø" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÎŞÇé·ç±©, L"ÎŞÇé·ç±©" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÎŞĞ§, L"ÎŞĞ§" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÎŞÊø, L"ÎŞÊø" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÎŞÂ·¿ÉÌÓ, L"ÎŞÂ·¿ÉÌÓ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÎŞ¼£, L"ÎŞ¼£" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::°µÒ¹Ö®Çç, L"°µÒ¹Ö®Çç" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::±©Å­Ô¹Áé, L"±©Å­Ô¹Áé" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::»úÆ÷Ñ§Ï°, L"»úÆ÷Ñ§Ï°" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¸Ü¸ËĞ§Ó¦, L"¸Ü¸ËĞ§Ó¦" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ĞÀÏ²Èô¿ñ, L"ĞÀÏ²Èô¿ñ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ĞªË¹µ×Àï, L"ĞªË¹µ×Àï" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ËÀÍö¿Ö¾å, L"ËÀÍö¿Ö¾å" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ËÀÍöî¿°í, L"ËÀÍöî¿°í" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::²ĞĞÄ, L"²ĞĞÄ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::²Ğ¿á½ûÖÆ, L"²Ğ¿á½ûÖÆ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ºÁ²»ÁôÇé, L"ºÁ²»ÁôÇé" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÓÀºã½»Ö¯, L"ÓÀºã½»Ö¯" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Ï´¶ú¹§Ìı, L"Ï´¶ú¹§Ìı" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::äÎÃğÖ®¹â, L"äÎÃğÖ®¹â" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÑÌÏûÔÆÉ¢, L"ÑÌÏûÔÆÉ¢" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::±¬·¢, L"±¬·¢" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÀÎÀÎ½ôÎÕ, L"ÀÎÀÎ½ôÎÕ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÁÔÂ¹Õß, L"ÁÔÂ¹Õß" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Íß½âÒâÖ¾, L"Íß½âÒâÖ¾" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::µçÓ¿, L"µçÓ¿" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::µçÁ¿³¬ÔØ, L"µçÁ¿³¬ÔØ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::·è¿ñÓÂÆø, L"·è¿ñÓÂÆø" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¼²ËÙ²Ğ±©, L"¼²ËÙ²Ğ±©" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Çî×·²»Éá, L"Çî×·²»Éá" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::·ÛËéÏ£Íû, L"·ÛËéÏ£Íû" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÖÕ¾ÖÕ½Êõ, L"ÖÕ¾ÖÕ½Êõ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÑÎË®ÕÙ»½, L"ÑÎË®ÕÙ»½" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::±àÖ¯¹²Ãù, L"±àÖ¯¹²Ãù" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÄÍÁ¦³Ö¾Ã, L"ÄÍÁ¦³Ö¾Ã" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¸¯ÀÃ¸ÉÔ¤, L"¸¯ÀÃ¸ÉÔ¤" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÖÕ¼«ÎäÆ÷, L"ÖÕ¼«ÎäÆ÷" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::»¨ÑÔÇÉÓï, L"»¨ÑÔÇÉÓï" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¿àÉ¬µÍÓï, L"¿àÉ¬µÍÓï" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÑªÆø×·×Ù, L"ÑªÆø×·×Ù" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÖÂÃü×·×ÙÕß, L"ÖÂÃü×·×ÙÕß" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ĞĞ¼à×øÊØ, L"ĞĞ¼à×øÊØ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¼ÇÒäÓÌĞÂ, L"¼ÇÒäÓÌĞÂ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Éè±¸·¢ÉÕÓÑ, L"Éè±¸·¢ÉÕÓÑ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÑªĞÈÓü³¤, L"ÑªĞÈÓü³¤" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::³¬ÈËÀàÌåÄÜ, L"³¬ÈËÀàÌåÄÜ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::õÜõî²»Ç°, L"õÜõî²»Ç°" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::À±ÊÖÍÀ·ò, L"À±ÊÖÍÀ·ò" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::×·ĞÇ¿ñ, L"×·ĞÇ¿ñ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÅäºÏÊ§Ğ³, L"ÅäºÏÊ§Ğ³" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÅäÌ×µç³Ø, L"ÅäÌ×µç³Ø" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Ìú´¦Å®, L"Ìú´¦Å®" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::½ûÖ¹ÒşÉí, L"½ûÖ¹ÒşÉí" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÁìµØÒâÊ¶, L"ÁìµØÒâÊ¶" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::½¾°Á×Ô´ó, L"½¾°Á×Ô´ó" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¹íËî×·É±, L"¹íËî×·É±" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::¹íÑ»µıÓ°, L"¹íÑ»µıÓ°" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÏÊÑª»ØÏì, L"ÏÊÑª»ØÏì" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ºÚ°µÆôµÏ, L"ºÚ°µÆôµÏ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ºÚ°µ·îÏ×, L"ºÚ°µ·îÏ×" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::ÕĞÆ¸ÆôÊÂ, L"ÕĞÆ¸ÆôÊÂ" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::»ÃÓ°¿Ö¾å, L"»ÃÓ°¿Ö¾å" },
-	{ É±ÊÖÅäÖÃ¼¼ÄÜ::Éè±¸¹ÊÕÏ, L"Éè±¸¹ÊÕÏ" },
+	// å…¶ä»–æŠ€èƒ½
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å‹è°Šå¤©é•¿åœ°ä¹…, L"å‹è°Šå¤©é•¿åœ°ä¹…" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å“å“ä½œå“, L"å“å“ä½œå“" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å–˜é¸£æ„ŸçŸ¥, L"å–˜é¸£æ„ŸçŸ¥" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å—œè¡€å‡¶å…½, L"å—œè¡€å‡¶å…½" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å›¤ç§¯è€…, L"å›¤ç§¯è€…" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::åŸºå› é”, L"åŸºå› é”" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¤§å‘é›·éœ†, L"å¤§å‘é›·éœ†" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¤±æ•ˆå¼€å…³, L"å¤±æ•ˆå¼€å…³" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¥½æˆå¼€åœº, L"å¥½æˆå¼€åœº" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¯Œå…°å…‹æ—ä¹‹æ­», L"å¯Œå…°å…‹æ—ä¹‹æ­»" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¼ºåˆ¶å¿æ‚”, L"å¼ºåˆ¶å¿æ‚”" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å·¥åŒ , L"å·¥åŒ " },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å·¨é¾™ä¹‹æ¡, L"å·¨é¾™ä¹‹æ¡" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¼‚å½¢æœ¬èƒ½, L"å¼‚å½¢æœ¬èƒ½" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¿ƒæš—æ°”å‚², L"å¿ƒæš—æ°”å‚²" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¿ƒæƒŠè‚‰è·³, L"å¿ƒæƒŠè‚‰è·³" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ€’ç«ä¸­çƒ§, L"æ€’ç«ä¸­çƒ§" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ€¨æ°”å†²å¤©, L"æ€¨æ°”å†²å¤©" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ææƒ§ä¼ æŸ“, L"ææƒ§ä¼ æŸ“" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ææ…Œé™ä¸´, L"ææ…Œé™ä¸´" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ææƒ§é‡Šæ”¾, L"ææƒ§é‡Šæ”¾" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ©èµè§£è„±, L"æ©èµè§£è„±" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æƒŠé™©æˆ˜æ —, L"æƒŠé™©æˆ˜æ —" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ„ŸæŸ“ä¹‹è§¦æ‰‹, L"æ„ŸæŸ“ä¹‹è§¦æ‰‹" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ„ŸçŸ¥è§‰é†’, L"æ„ŸçŸ¥è§‰é†’" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ä¸è¦ç©å¼„ä½ çš„é£Ÿç‰©, L"ä¸è¦ç©å¼„ä½ çš„é£Ÿç‰©" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ‰€å‘æ— æ•Œ, L"æ‰€å‘æ— æ•Œ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æŠŠæœ€å¥½çš„ç•™åœ¨æœ€å, L"æŠŠæœ€å¥½çš„ç•™åœ¨æœ€å" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æŠ˜ç£¨è·¯å¾„, L"æŠ˜ç£¨è·¯å¾„" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æŠ¤å£«çš„å‘¼å”¤, L"æŠ¤å£«çš„å‘¼å”¤" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æŠ¥åº”, L"æŠ¥åº”" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ”¯é…ä¹‹åŠ›, L"æ”¯é…ä¹‹åŠ›" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ— ä¸€å¹¸å…, L"æ— ä¸€å¹¸å…" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ— å¤„å¯è—, L"æ— å¤„å¯è—" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ— æƒ…é£æš´, L"æ— æƒ…é£æš´" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ— æ•ˆ, L"æ— æ•ˆ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ— æŸ, L"æ— æŸ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ— è·¯å¯é€ƒ, L"æ— è·¯å¯é€ƒ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ— è¿¹, L"æ— è¿¹" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æš—å¤œä¹‹æ™´, L"æš—å¤œä¹‹æ™´" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æš´æ€’æ€¨çµ, L"æš´æ€’æ€¨çµ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æœºå™¨å­¦ä¹ , L"æœºå™¨å­¦ä¹ " },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ æ†æ•ˆåº”, L"æ æ†æ•ˆåº”" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ¬£å–œè‹¥ç‹‚, L"æ¬£å–œè‹¥ç‹‚" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ­‡æ–¯åº•é‡Œ, L"æ­‡æ–¯åº•é‡Œ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ­»äº¡ææƒ§, L"æ­»äº¡ææƒ§" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ­»äº¡ç¾ç»Š, L"æ­»äº¡ç¾ç»Š" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ®‹å¿ƒ, L"æ®‹å¿ƒ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ®‹é…·ç¦åˆ¶, L"æ®‹é…·ç¦åˆ¶" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ¯«ä¸ç•™æƒ…, L"æ¯«ä¸ç•™æƒ…" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ°¸æ’äº¤ç»‡, L"æ°¸æ’äº¤ç»‡" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ´—è€³æ­å¬, L"æ´—è€³æ­å¬" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ¹®ç­ä¹‹å…‰, L"æ¹®ç­ä¹‹å…‰" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::çƒŸæ¶ˆäº‘æ•£, L"çƒŸæ¶ˆäº‘æ•£" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::çˆ†å‘, L"çˆ†å‘" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç‰¢ç‰¢ç´§æ¡, L"ç‰¢ç‰¢ç´§æ¡" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::çŒé¹¿è€…, L"çŒé¹¿è€…" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç“¦è§£æ„å¿—, L"ç“¦è§£æ„å¿—" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç”µæ¶Œ, L"ç”µæ¶Œ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç”µé‡è¶…è½½, L"ç”µé‡è¶…è½½" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç–¯ç‹‚å‹‡æ°”, L"ç–¯ç‹‚å‹‡æ°”" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç–¾é€Ÿæ®‹æš´, L"ç–¾é€Ÿæ®‹æš´" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç©·è¿½ä¸èˆ, L"ç©·è¿½ä¸èˆ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç²‰ç¢å¸Œæœ›, L"ç²‰ç¢å¸Œæœ›" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç»ˆå±€æˆ˜æœ¯, L"ç»ˆå±€æˆ˜æœ¯" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç›æ°´å¬å”¤, L"ç›æ°´å¬å”¤" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç¼–ç»‡å…±é¸£, L"ç¼–ç»‡å…±é¸£" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è€åŠ›æŒä¹…, L"è€åŠ›æŒä¹…" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è…çƒ‚å¹²é¢„, L"è…çƒ‚å¹²é¢„" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç»ˆææ­¦å™¨, L"ç»ˆææ­¦å™¨" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::èŠ±è¨€å·§è¯­, L"èŠ±è¨€å·§è¯­" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è‹¦æ¶©ä½è¯­, L"è‹¦æ¶©ä½è¯­" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è¡€æ°”è¿½è¸ª, L"è¡€æ°”è¿½è¸ª" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è‡´å‘½è¿½è¸ªè€…, L"è‡´å‘½è¿½è¸ªè€…" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è¡Œç›‘åå®ˆ, L"è¡Œç›‘åå®ˆ" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è®°å¿†çŠ¹æ–°, L"è®°å¿†çŠ¹æ–°" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è®¾å¤‡å‘çƒ§å‹, L"è®¾å¤‡å‘çƒ§å‹" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è¡€è…¥ç‹±é•¿, L"è¡€è…¥ç‹±é•¿" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è¶…äººç±»ä½“èƒ½, L"è¶…äººç±»ä½“èƒ½" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è¸¯èº…ä¸å‰, L"è¸¯èº…ä¸å‰" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è¾£æ‰‹å± å¤«, L"è¾£æ‰‹å± å¤«" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è¿½æ˜Ÿç‹‚, L"è¿½æ˜Ÿç‹‚" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::é…åˆå¤±è°, L"é…åˆå¤±è°" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::é…å¥—ç”µæ± , L"é…å¥—ç”µæ± " },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::é“å¤„å¥³, L"é“å¤„å¥³" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::ç¦æ­¢éšèº«, L"ç¦æ­¢éšèº«" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::é¢†åœ°æ„è¯†, L"é¢†åœ°æ„è¯†" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::éª„å‚²è‡ªå¤§, L"éª„å‚²è‡ªå¤§" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::é¬¼ç¥Ÿè¿½æ€, L"é¬¼ç¥Ÿè¿½æ€" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::é¬¼é¸¦è°å½±, L"é¬¼é¸¦è°å½±" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::é²œè¡€å›å“, L"é²œè¡€å›å“" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::é»‘æš—å¯è¿ª, L"é»‘æš—å¯è¿ª" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::é»‘æš—å¥‰çŒ®, L"é»‘æš—å¥‰çŒ®" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::æ‹›è˜å¯äº‹, L"æ‹›è˜å¯äº‹" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::å¹»å½±ææƒ§, L"å¹»å½±ææƒ§" },
+	{ æ€æ‰‹é…ç½®æŠ€èƒ½::è®¾å¤‡æ•…éšœ, L"è®¾å¤‡æ•…éšœ" },
 
 
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::²»Ï§Ò»ÇĞ1, L"²»Ï§Ò»ÇĞ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::²»Ï§Ò»ÇĞ2, L"²»Ï§Ò»ÇĞ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::²»Í´²»Ñ÷, L"²»Í´²»Ñ÷" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::²»ÏéÔ¤¸Ğ, L"²»ÏéÔ¤¸Ğ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÓëÎÒ¹²Îè, L"ÓëÎÒ¹²Îè" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¶«É½ÔÙÆğ, L"¶«É½ÔÙÆğ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÎªÉú¶øÉú, L"ÎªÉú¶øÉú" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Íö¸¸¾¯ÑÔ, L"Íö¸¸¾¯ÑÔ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::½»¸åÈÕ, L"½»¸åÈÕ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÈËÖ®ÓÂÆø, L"ÈËÖ®ÓÂÆø" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ËÆÔøÏàÊ¶, L"ËÆÔøÏàÊ¶" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::µÍµ÷ĞĞÊÂ, L"µÍµ÷ĞĞÊÂ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Óà¹â³¤´æ, L"Óà¹â³¤´æ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::±£Ä·, L"±£Ä·" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¹âÃ÷ÓÂÊ¿, L"¹âÃ÷ÓÂÊ¿" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¿Ë·şÄÑ¹Ø, L"¿Ë·şÄÑ¹Ø" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::±ø²»ÑáÕ©, L"±ø²»ÑáÕ©" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÄÚÔÚ×¨×¢, L"ÄÚÔÚ×¨×¢" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÄÚĞÄÖ®Á¦, L"ÄÚĞÄÖ®Á¦" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::³å´Ì±¬·¢, L"³å´Ì±¬·¢" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::·Ö±ÀÀëÎö, L"·Ö±ÀÀëÎö" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÇĞÎğÉËº¦, L"ÇĞÎğÉËº¦" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::½ÙºóÓàÉú, L"½ÙºóÓàÉú" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÓÂÍùÖ±Ç°, L"ÓÂÍùÖ±Ç°" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::»¯Ñ§ÏİÚå, L"»¯Ñ§ÏİÚå" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ç§ÀïÑÛ, L"Ç§ÀïÑÛ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¼´ĞË±íÑİ, L"¼´ĞË±íÑİ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ñ¹ÒÖÍ¬ÃË, L"Ñ¹ÒÖÍ¬ÃË" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÓÑÒêÈü, L"ÓÑÒêÈü" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::·´ÖÆÖ®Á¦, L"·´ÖÆÖ®Á¦" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¸÷×ÔÎª°², L"¸÷×ÔÎª°²" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Í¬Ö¾ÇéÒê, L"Í¬Ö¾ÇéÒê" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Í¬×å, L"Í¬×å" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Í¬Éú¹²ËÀ, L"Í¬Éú¹²ËÀ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ò÷ÓÎÊ«ÈË¼¤Àø, L"Ò÷ÓÎÊ«ÈË¼¤Àø" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ò§½ôÑÀ¹Ø, L"Ò§½ôÑÀ¹Ø" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÉÆÓĞÉÆ±¨, L"ÉÆÓĞÉÆ±¨" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÍÅ½áÒ»ÖÂ, L"ÍÅ½áÒ»ÖÂ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÍÅ¶ÓºÏ×÷_¶şÈËÖ®Á¦, L"ÍÅ¶ÓºÏ×÷_¶şÈËÖ®Á¦" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÍÅ¶ÓºÏ×÷_È«ÌåÒş±Î, L"ÍÅ¶ÓºÏ×÷_È«ÌåÒş±Î" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¼á²»¿É´İ, L"¼á²»¿É´İ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Éù¶«»÷Î÷, L"Éù¶«»÷Î÷" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¸´ËÕÖ®·ç, L"¸´ËÕÖ®·ç" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ºÃÔË»á´«È¾, L"ºÃÔË»á´«È¾" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÊØÒ¹ÈË, L"ÊØÒ¹ÈË" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::°²¸§ÉúÁé, L"°²¸§ÉúÁé" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¶¨ĞÄÍè, L"¶¨ĞÄÍè" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¶Ô²ßÖÎÁÆ, L"¶Ô²ßÖÎÁÆ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ï£ÍûÖ®Òí, L"Ï£ÍûÖ®Òí" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ä»ºóÍæ¼Ò, L"Ä»ºóÍæ¼Ò" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Æ½ÎÈ×ÅÂ½, L"Æ½ÎÈ×ÅÂ½" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::²¢ĞĞ½øÕ¹, L"²¢ĞĞ½øÕ¹" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ĞÒÔË´­Ï¢, L"ĞÒÔË´­Ï¢" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ĞÒÔËĞÇ, L"ĞÒÔËĞÇ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ç¿Á¦ÕõÔú, L"Ç¿Á¦ÕõÔú" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ç¿µÁÖ±¾õ, L"Ç¿µÁÖ±¾õ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::µ±»úÁ¢¶Ï, L"µ±»úÁ¢¶Ï" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ĞÄÁé¹²Ãù, L"ĞÄÁé¹²Ãù" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ĞÄ¾²ÑÛÃ÷, L"ĞÄ¾²ÑÛÃ÷" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¿ìËÙ·´Ó¦, L"¿ìËÙ·´Ó¦" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¿ìËÙ²ßÂÔ, L"¿ìËÙ²ßÂÔ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¼±ÓÚÇó³É, L"¼±ÓÚÇó³É" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¼±ËÙ¾²Ú×, L"¼±ËÙ¾²Ú×" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¶÷´Í_Ö¸ÊıÔö³¤, L"¶÷´Í_Ö¸ÊıÔö³¤" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¶÷´Í_Ã÷ÁÁ, L"¶÷´Í_Ã÷ÁÁ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¶÷´Í_°µÓ°²½, L"¶÷´Í_°µÓ°²½" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¶÷´Í_ÖÎÁÆÖ®»·, L"¶÷´Í_ÖÎÁÆÖ®»·" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¶÷´Í_ºÚ°µÀíÂÛ, L"¶÷´Í_ºÚ°µÀíÂÛ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¸ĞÍ¬ÉíÊÜ, L"¸ĞÍ¬ÉíÊÜ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::³É¹¦½İ¾¶, L"³É¹¦½İ¾¶" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¼¼ÊõÔ±, L"¼¼ÊõÔ±" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÕõÍÑ¼¤Àø, L"ÕõÍÑ¼¤Àø" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ğ¯ÊÖºÏ×÷, L"Ğ¯ÊÖºÏ×÷" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ĞÂÈË¾«Éñ, L"ĞÂÈË¾«Éñ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ê±²»ÎÒ´ı, L"Ê±²»ÎÒ´ı" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ã÷²ìÇïºÁ, L"Ã÷²ìÇïºÁ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::°µºÚ¸ĞÖª, L"°µºÚ¸ĞÖª" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::±©×ß×å, L"±©×ß×å" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::×îºóµÄÉú»¹Õß, L"×îºóµÄÉú»¹Õß" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Î´Óê³ñçÑ, L"Î´Óê³ñçÑ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ä©ÈÕ²Ğ±ø, L"Ä©ÈÕ²Ğ±ø" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::»úÓöÖ®´°, L"»úÓöÖ®´°" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¹û¶Ï·´»÷, L"¹û¶Ï·´»÷" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ã«¹Çã¤È», L"Ã«¹Çã¤È»" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Æø³¡Ê§Õæ, L"Æø³¡Ê§Õæ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÓÀ²»ÑÔÆú, L"ÓÀ²»ÑÔÆú" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÇóÉúÓû, L"ÇóÉúÓû" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ô¡Ñª³å´Ì, L"Ô¡Ñª³å´Ì" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÇåµÀ·ò, L"ÇåµÀ·ò" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ç±Á¦ÎŞÏŞ, L"Ç±Á¦ÎŞÏŞ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Áé»êÊØÎÀ, L"Áé»êÊØÎÀ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::»ÀÈ»Ò»ĞÂ, L"»ÀÈ»Ò»ĞÂ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::±¬Õ¨µØÀ×, L"±¬Õ¨µØÀ×" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::á÷ÁÔ¾­Ñé, L"á÷ÁÔ¾­Ñé" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÉúËÀÓë¹², L"ÉúËÀÓë¹²" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::°ÙÕÛ²»ÄÓ, L"°ÙÕÛ²»ÄÓ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::½Ã½¡ÉíÊÖ, L"½Ã½¡ÉíÊÖ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::½ÃÕı´ëÊ©, L"½ÃÕı´ëÊ©" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÆÆ»µÊÖ, L"ÆÆ»µÊÖ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÆÆ°¸ĞÄÇĞ, L"ÆÆ°¸ĞÄÇĞ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Æíµ»_Ö¯ÍøÖ©Öë, L"Æíµ»_Ö¯ÍøÖ©Öë" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Æíµ»_ÏÕ¶ñÎÚÑ», L"Æíµ»_ÏÕ¶ñÎÚÑ»" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÎÈ²ÙÊ¤È¯, L"ÎÈ²ÙÊ¤È¯" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÇÔÌıÆ÷, L"ÇÔÌıÆ÷" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::´ğÒÉ½â»ó, L"´ğÒÉ½â»ó" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¾«ÑĞ°Ù²İ, L"¾«ÑĞ°Ù²İ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¾­¾ÃÄÍÓÃ, L"¾­¾ÃÄÍÓÃ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¾ø¾³¶Ô²ß, L"¾ø¾³¶Ô²ß" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÀÏ±¾ĞĞ, L"ÀÏ±¾ĞĞ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÁªñÇÖ÷Ñİ, L"ÁªñÇÖ÷Ñİ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¾Û¾«»áÉñ, L"¾Û¾«»áÉñ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¼ç¸ºÖØµ£, L"¼ç¸ºÖØµ£" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÉöÉÏÏÙËØ, L"ÉöÉÏÏÙËØ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ê¤ÀûÏ²ÔÃ, L"Ê¤ÀûÏ²ÔÃ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÍÑçÖÒ°Âí, L"ÍÑçÖÒ°Âí" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::×ÔÑ§³É²Å, L"×ÔÑ§³É²Å" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::×ÔÎÒ±£»¤, L"×ÔÎÒ±£»¤" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::×ÔÎÒÁÆÓú, L"×ÔÎÒÁÆÓú" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Éá¼ºÎªÈË, L"Éá¼ºÎªÈË" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÈÙÒ«Ê±¿Ì, L"ÈÙÒ«Ê±¿Ì" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ò©µ½²¡³ı, L"Ò©µ½²¡³ı" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ĞîÊÆ´ı·¢, L"ĞîÊÆ´ı·¢" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¾¯½ä, L"¾¯½ä" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¾¯Ì½Ö±¾õ, L"¾¯Ì½Ö±¾õ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÈÏ¶¨Ä¿±ê, L"ÈÏ¶¨Ä¿±ê" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ö¤Ã÷×Ô¼º, L"Ö¤Ã÷×Ô¼º" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::½÷É÷ÔğÈÎ, L"½÷É÷ÔğÈÎ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::±´¶ûÃÉÌØÖ®ÑÛ, L"±´¶ûÃÉÌØÖ®ÑÛ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::µøå´¾çÇé, L"µøå´¾çÇé" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::×ªÒÆ×¢Òâ, L"×ªÒÆ×¢Òâ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ºä¶¯Ñİ³ö, L"ºä¶¯Ñİ³ö" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÇáÈçºèÃ«, L"ÇáÈçºèÃ«" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÇáÓ¯Ãô½İ, L"ÇáÓ¯Ãô½İ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÇáÓ¯Ã¨²½, L"ÇáÓ¯Ã¨²½" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ô¶¼û×¿Ê¶, L"Ô¶¼û×¿Ê¶" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÃÔÎí»ÛÑÛ, L"ÃÔÎí»ÛÑÛ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÌÓÖ®Ø²Ø², L"ÌÓÖ®Ø²Ø²" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Ğ°ËîÖ®Á¦, L"Ğ°ËîÖ®Á¦" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¶¼ÊĞÉú´æ, L"¶¼ÊĞÉú´æ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ĞÑĞÑ£¡£¡£¡, L"ĞÑĞÑ£¡£¡£¡" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¸Ö½îÌú¹Ç, L"¸Ö½îÌú¹Ç" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¸ÖÌúÒâÖ¾, L"¸ÖÌúÒâÖ¾" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::½õÄÒÃî¼Æ, L"½õÄÒÃî¼Æ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::¾µÓ°»ÃÏó, L"¾µÓ°»ÃÏó" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÉÁ¹âµ¯, L"ÉÁ¹âµ¯" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÒşÄäÖ®ÊÆ, L"ÒşÄäÖ®ÊÆ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÄÑÒÔÖÃĞÅ, L"ÄÑÒÔÖÃĞÅ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::·ÇÕıÊ½µ÷²é, L"·ÇÕıÊ½µ÷²é" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÁìĞäÈºĞÛ, L"ÁìĞäÈºĞÛ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::Âíµ½³É¹¦, L"Âíµ½³É¹¦" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::»êÇ£ÃÎÈÆ, L"»êÇ£ÃÎÈÆ" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÏÊÑªÆõÔ¼, L"ÏÊÑªÆõÔ¼" },
-	{ ĞÒ´æÕßÅäÖÃ¼¼ÄÜ::ÆëĞÄĞ­Á¦, L"ÆëĞÄĞ­Á¦" }
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä¸æƒœä¸€åˆ‡1, L"ä¸æƒœä¸€åˆ‡" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä¸æƒœä¸€åˆ‡2, L"ä¸æƒœä¸€åˆ‡" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä¸ç—›ä¸ç—’, L"ä¸ç—›ä¸ç—’" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä¸ç¥¥é¢„æ„Ÿ, L"ä¸ç¥¥é¢„æ„Ÿ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä¸æˆ‘å…±èˆ, L"ä¸æˆ‘å…±èˆ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä¸œå±±å†èµ·, L"ä¸œå±±å†èµ·" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä¸ºç”Ÿè€Œç”Ÿ, L"ä¸ºç”Ÿè€Œç”Ÿ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::äº¡çˆ¶è­¦è¨€, L"äº¡çˆ¶è­¦è¨€" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::äº¤ç¨¿æ—¥, L"äº¤ç¨¿æ—¥" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::äººä¹‹å‹‡æ°”, L"äººä¹‹å‹‡æ°”" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä¼¼æ›¾ç›¸è¯†, L"ä¼¼æ›¾ç›¸è¯†" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä½è°ƒè¡Œäº‹, L"ä½è°ƒè¡Œäº‹" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä½™å…‰é•¿å­˜, L"ä½™å…‰é•¿å­˜" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ä¿å§†, L"ä¿å§†" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å…‰æ˜å‹‡å£«, L"å…‰æ˜å‹‡å£«" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å…‹æœéš¾å…³, L"å…‹æœéš¾å…³" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å…µä¸åŒè¯ˆ, L"å…µä¸åŒè¯ˆ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å†…åœ¨ä¸“æ³¨, L"å†…åœ¨ä¸“æ³¨" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å†…å¿ƒä¹‹åŠ›, L"å†…å¿ƒä¹‹åŠ›" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å†²åˆºçˆ†å‘, L"å†²åˆºçˆ†å‘" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::åˆ†å´©ç¦»æ, L"åˆ†å´©ç¦»æ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::åˆ‡å‹¿ä¼¤å®³, L"åˆ‡å‹¿ä¼¤å®³" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::åŠ«åä½™ç”Ÿ, L"åŠ«åä½™ç”Ÿ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å‹‡å¾€ç›´å‰, L"å‹‡å¾€ç›´å‰" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::åŒ–å­¦é™·é˜±, L"åŒ–å­¦é™·é˜±" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::åƒé‡Œçœ¼, L"åƒé‡Œçœ¼" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å³å…´è¡¨æ¼”, L"å³å…´è¡¨æ¼”" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å‹æŠ‘åŒç›Ÿ, L"å‹æŠ‘åŒç›Ÿ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å‹è°Šèµ›, L"å‹è°Šèµ›" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ååˆ¶ä¹‹åŠ›, L"ååˆ¶ä¹‹åŠ›" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å„è‡ªä¸ºå®‰, L"å„è‡ªä¸ºå®‰" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::åŒå¿—æƒ…è°Š, L"åŒå¿—æƒ…è°Š" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::åŒæ—, L"åŒæ—" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::åŒç”Ÿå…±æ­», L"åŒç”Ÿå…±æ­»" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::åŸæ¸¸è¯—äººæ¿€åŠ±, L"åŸæ¸¸è¯—äººæ¿€åŠ±" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å’¬ç´§ç‰™å…³, L"å’¬ç´§ç‰™å…³" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å–„æœ‰å–„æŠ¥, L"å–„æœ‰å–„æŠ¥" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å›¢ç»“ä¸€è‡´, L"å›¢ç»“ä¸€è‡´" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å›¢é˜Ÿåˆä½œ_äºŒäººä¹‹åŠ›, L"å›¢é˜Ÿåˆä½œ_äºŒäººä¹‹åŠ›" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å›¢é˜Ÿåˆä½œ_å…¨ä½“éšè”½, L"å›¢é˜Ÿåˆä½œ_å…¨ä½“éšè”½" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::åšä¸å¯æ‘§, L"åšä¸å¯æ‘§" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å£°ä¸œå‡»è¥¿, L"å£°ä¸œå‡»è¥¿" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¤è‹ä¹‹é£, L"å¤è‹ä¹‹é£" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¥½è¿ä¼šä¼ æŸ“, L"å¥½è¿ä¼šä¼ æŸ“" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å®ˆå¤œäºº, L"å®ˆå¤œäºº" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å®‰æŠšç”Ÿçµ, L"å®‰æŠšç”Ÿçµ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å®šå¿ƒä¸¸, L"å®šå¿ƒä¸¸" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¯¹ç­–æ²»ç–—, L"å¯¹ç­–æ²»ç–—" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¸Œæœ›ä¹‹ç¿¼, L"å¸Œæœ›ä¹‹ç¿¼" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¹•åç©å®¶, L"å¹•åç©å®¶" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¹³ç¨³ç€é™†, L"å¹³ç¨³ç€é™†" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¹¶è¡Œè¿›å±•, L"å¹¶è¡Œè¿›å±•" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¹¸è¿å–˜æ¯, L"å¹¸è¿å–˜æ¯" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¹¸è¿æ˜Ÿ, L"å¹¸è¿æ˜Ÿ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¼ºåŠ›æŒ£æ‰, L"å¼ºåŠ›æŒ£æ‰" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¼ºç›—ç›´è§‰, L"å¼ºç›—ç›´è§‰" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å½“æœºç«‹æ–­, L"å½“æœºç«‹æ–­" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¿ƒçµå…±é¸£, L"å¿ƒçµå…±é¸£" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¿ƒé™çœ¼æ˜, L"å¿ƒé™çœ¼æ˜" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¿«é€Ÿååº”, L"å¿«é€Ÿååº”" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::å¿«é€Ÿç­–ç•¥, L"å¿«é€Ÿç­–ç•¥" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ€¥äºæ±‚æˆ, L"æ€¥äºæ±‚æˆ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ€¥é€Ÿé™è°§, L"æ€¥é€Ÿé™è°§" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ©èµ_æŒ‡æ•°å¢é•¿, L"æ©èµ_æŒ‡æ•°å¢é•¿" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ©èµ_æ˜äº®, L"æ©èµ_æ˜äº®" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ©èµ_æš—å½±æ­¥, L"æ©èµ_æš—å½±æ­¥" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ©èµ_æ²»ç–—ä¹‹ç¯, L"æ©èµ_æ²»ç–—ä¹‹ç¯" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ©èµ_é»‘æš—ç†è®º, L"æ©èµ_é»‘æš—ç†è®º" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ„ŸåŒèº«å—, L"æ„ŸåŒèº«å—" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æˆåŠŸæ·å¾„, L"æˆåŠŸæ·å¾„" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æŠ€æœ¯å‘˜, L"æŠ€æœ¯å‘˜" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æŒ£è„±æ¿€åŠ±, L"æŒ£è„±æ¿€åŠ±" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æºæ‰‹åˆä½œ, L"æºæ‰‹åˆä½œ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ–°äººç²¾ç¥, L"æ–°äººç²¾ç¥" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ—¶ä¸æˆ‘å¾…, L"æ—¶ä¸æˆ‘å¾…" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ˜å¯Ÿç§‹æ¯«, L"æ˜å¯Ÿç§‹æ¯«" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æš—é»‘æ„ŸçŸ¥, L"æš—é»‘æ„ŸçŸ¥" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æš´èµ°æ—, L"æš´èµ°æ—" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æœ€åçš„ç”Ÿè¿˜è€…, L"æœ€åçš„ç”Ÿè¿˜è€…" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æœªé›¨ç»¸ç¼ª, L"æœªé›¨ç»¸ç¼ª" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æœ«æ—¥æ®‹å…µ, L"æœ«æ—¥æ®‹å…µ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æœºé‡ä¹‹çª—, L"æœºé‡ä¹‹çª—" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æœæ–­åå‡», L"æœæ–­åå‡»" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ¯›éª¨æ‚šç„¶, L"æ¯›éª¨æ‚šç„¶" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ°”åœºå¤±çœŸ, L"æ°”åœºå¤±çœŸ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ°¸ä¸è¨€å¼ƒ, L"æ°¸ä¸è¨€å¼ƒ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ±‚ç”Ÿæ¬², L"æ±‚ç”Ÿæ¬²" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æµ´è¡€å†²åˆº, L"æµ´è¡€å†²åˆº" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ¸…é“å¤«, L"æ¸…é“å¤«" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::æ½œåŠ›æ— é™, L"æ½œåŠ›æ— é™" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::çµé­‚å®ˆå«, L"çµé­‚å®ˆå«" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç„•ç„¶ä¸€æ–°, L"ç„•ç„¶ä¸€æ–°" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::çˆ†ç‚¸åœ°é›·, L"çˆ†ç‚¸åœ°é›·" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç‹©çŒç»éªŒ, L"ç‹©çŒç»éªŒ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç”Ÿæ­»ä¸å…±, L"ç”Ÿæ­»ä¸å…±" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç™¾æŠ˜ä¸æŒ , L"ç™¾æŠ˜ä¸æŒ " },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::çŸ«å¥èº«æ‰‹, L"çŸ«å¥èº«æ‰‹" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::çŸ«æ­£æªæ–½, L"çŸ«æ­£æªæ–½" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç ´åæ‰‹, L"ç ´åæ‰‹" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç ´æ¡ˆå¿ƒåˆ‡, L"ç ´æ¡ˆå¿ƒåˆ‡" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç¥ˆç¥·_ç»‡ç½‘èœ˜è››, L"ç¥ˆç¥·_ç»‡ç½‘èœ˜è››" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç¥ˆç¥·_é™©æ¶ä¹Œé¸¦, L"ç¥ˆç¥·_é™©æ¶ä¹Œé¸¦" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç¨³æ“èƒœåˆ¸, L"ç¨³æ“èƒœåˆ¸" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::çªƒå¬å™¨, L"çªƒå¬å™¨" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç­”ç–‘è§£æƒ‘, L"ç­”ç–‘è§£æƒ‘" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç²¾ç ”ç™¾è‰, L"ç²¾ç ”ç™¾è‰" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç»ä¹…è€ç”¨, L"ç»ä¹…è€ç”¨" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::ç»å¢ƒå¯¹ç­–, L"ç»å¢ƒå¯¹ç­–" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è€æœ¬è¡Œ, L"è€æœ¬è¡Œ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è”è¢‚ä¸»æ¼”, L"è”è¢‚ä¸»æ¼”" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::èšç²¾ä¼šç¥, L"èšç²¾ä¼šç¥" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è‚©è´Ÿé‡æ‹…, L"è‚©è´Ÿé‡æ‹…" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è‚¾ä¸Šè…ºç´ , L"è‚¾ä¸Šè…ºç´ " },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::èƒœåˆ©å–œæ‚¦, L"èƒœåˆ©å–œæ‚¦" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è„±ç¼°é‡é©¬, L"è„±ç¼°é‡é©¬" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è‡ªå­¦æˆæ‰, L"è‡ªå­¦æˆæ‰" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è‡ªæˆ‘ä¿æŠ¤, L"è‡ªæˆ‘ä¿æŠ¤" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è‡ªæˆ‘ç–—æ„ˆ, L"è‡ªæˆ‘ç–—æ„ˆ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::èˆå·±ä¸ºäºº, L"èˆå·±ä¸ºäºº" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è£è€€æ—¶åˆ», L"è£è€€æ—¶åˆ»" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è¯åˆ°ç—…é™¤, L"è¯åˆ°ç—…é™¤" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è“„åŠ¿å¾…å‘, L"è“„åŠ¿å¾…å‘" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è­¦æˆ’, L"è­¦æˆ’" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è­¦æ¢ç›´è§‰, L"è­¦æ¢ç›´è§‰" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è®¤å®šç›®æ ‡, L"è®¤å®šç›®æ ‡" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è¯æ˜è‡ªå·±, L"è¯æ˜è‡ªå·±" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è°¨æ…è´£ä»», L"è°¨æ…è´£ä»»" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è´å°”è’™ç‰¹ä¹‹çœ¼, L"è´å°”è’™ç‰¹ä¹‹çœ¼" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è·Œå®•å‰§æƒ…, L"è·Œå®•å‰§æƒ…" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è½¬ç§»æ³¨æ„, L"è½¬ç§»æ³¨æ„" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è½°åŠ¨æ¼”å‡º, L"è½°åŠ¨æ¼”å‡º" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è½»å¦‚é¸¿æ¯›, L"è½»å¦‚é¸¿æ¯›" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è½»ç›ˆæ•æ·, L"è½»ç›ˆæ•æ·" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è½»ç›ˆçŒ«æ­¥, L"è½»ç›ˆçŒ«æ­¥" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è¿œè§å“è¯†, L"è¿œè§å“è¯†" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::è¿·é›¾æ…§çœ¼, L"è¿·é›¾æ…§çœ¼" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é€ƒä¹‹å¤­å¤­, L"é€ƒä¹‹å¤­å¤­" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é‚ªç¥Ÿä¹‹åŠ›, L"é‚ªç¥Ÿä¹‹åŠ›" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::éƒ½å¸‚ç”Ÿå­˜, L"éƒ½å¸‚ç”Ÿå­˜" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é†’é†’ï¼ï¼ï¼, L"é†’é†’ï¼ï¼ï¼" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é’¢ç­‹é“éª¨, L"é’¢ç­‹é“éª¨" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é’¢é“æ„å¿—, L"é’¢é“æ„å¿—" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é”¦å›Šå¦™è®¡, L"é”¦å›Šå¦™è®¡" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é•œå½±å¹»è±¡, L"é•œå½±å¹»è±¡" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é—ªå…‰å¼¹, L"é—ªå…‰å¼¹" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::éšåŒ¿ä¹‹åŠ¿, L"éšåŒ¿ä¹‹åŠ¿" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::éš¾ä»¥ç½®ä¿¡, L"éš¾ä»¥ç½®ä¿¡" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::éæ­£å¼è°ƒæŸ¥, L"éæ­£å¼è°ƒæŸ¥" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é¢†è¢–ç¾¤é›„, L"é¢†è¢–ç¾¤é›„" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é©¬åˆ°æˆåŠŸ, L"é©¬åˆ°æˆåŠŸ" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é­‚ç‰µæ¢¦ç»•, L"é­‚ç‰µæ¢¦ç»•" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é²œè¡€å¥‘çº¦, L"é²œè¡€å¥‘çº¦" },
+	{ å¹¸å­˜è€…é…ç½®æŠ€èƒ½::é½å¿ƒååŠ›, L"é½å¿ƒååŠ›" }
 };
 
 
