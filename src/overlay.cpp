@@ -2,28 +2,13 @@
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
-
 #include <dwmapi.h>
 #include <d3d11.h>
 #include <cstdint>
 #include <iostream>
-#include <chrono>
-
-#include<algorithm>
-
 #include"Vector.h"
-#include"Mem.h"
-
 #include"GlobalOffsets.h"
-#include <thread>
 
-/*
-在循环的更新表达式中（i++或++i），两者最终效果相同，因为都是对i自增 1。区别仅在于自增的时机，但循环更新只关心 “自增” 这个动作，不依赖返回值，因此结果无差异。
-在循环条件中直接使用i++或++i时，行为差异明显：
-
-i++会先使用原值判断，再自增，导致循环内首次使用的是自增后的值；
-++i会先自增，再用新值判断，循环内始终使用自增后的值。
-*/
 
 
 
@@ -50,7 +35,6 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 
-// 修正后的 GetEntryByIndex 函数
 inline __forceinline FNameEntry* GetEntryByIndex(uint32_t Index, uint64_t GName)
 {
 	const uint32_t ChunkIdx = Index >> 16;
@@ -74,7 +58,6 @@ inline __forceinline FNameEntry* GetEntryByIndex(uint32_t Index, uint64_t GName)
 	uint64_t EntryAddress = BlockAddress + (InChunk * 4);
 	return reinterpret_cast<FNameEntry*>(EntryAddress);
 }
-// 修正后的 GetNameByIndex 函数
 inline __forceinline std::string GetNameByIndexString(int32_t Index, uint64_t GName)
 {
 	FNameEntry* entry = GetEntryByIndex(Index, GName);
@@ -126,7 +109,7 @@ inline __forceinline std::string GetNameByIndexString(int32_t Index, uint64_t GN
 	}
 }
 
-// 返回指向线程局部静态缓冲区的 const char*
+
 inline __forceinline const char* GetNameByIndex(int32_t Index, uint64_t GName)
 {
 	static thread_local char buffer[1024];
@@ -169,7 +152,7 @@ inline __forceinline const char* GetNameByIndex(int32_t Index, uint64_t GName)
 	return buffer;
 }
 
-// 将宽字符字符串转换为 UTF-8 的 const char*
+
 static inline __forceinline const char* WideToUtf8(const wchar_t* wstr) {
 	static thread_local char buffer[2048];
 	if (!wstr || wstr[0] == L'\0') {
@@ -186,7 +169,7 @@ static inline __forceinline const char* WideToUtf8(const wchar_t* wstr) {
 	return buffer;
 }
 
-// 辅助：将 std::wstring 转为 UTF-8 const char*
+
 static inline __forceinline const char* WideToUtf8(const std::wstring& wstr) {
 	return WideToUtf8(wstr.c_str());
 }
@@ -196,66 +179,14 @@ static inline __forceinline const char* WideToUtf8(const std::wstring& wstr) {
 
 
 
-void EngingDebugPrintf(Engine engine) {
-	// 输出 World / Level / Actors
-	std::cout << "=== Engine 基础信息 ===\n";
-	std::cout << "pLevel:            0x" << std::hex << engine.pLevel << std::dec << "\n";
-	std::cout << "actors:            0x" << std::hex << engine.actors << std::dec << "\n";
-	std::cout << "Num:                 " << engine.Num << "\n\n";
-
-	// 本地玩家摄像机链
-	std::cout << "GameInstance:      0x" << std::hex << engine.GameInstance << std::dec << "\n";
-	std::cout << "LocalPlayer:       0x" << std::hex << engine.LocalPlayer << std::dec << "\n";
-	std::cout << "PlayerController:  0x" << std::hex << engine.PlayerController << std::dec << "\n";
-	std::cout << "AcknowledgedPawn:  0x" << std::hex << engine.AcknowledgedPawn << std::dec << "\n";
-	std::cout << "PlayerCameraMgr:   0x" << std::hex << engine.PlayerCameraManager << std::dec << "\n\n";
-
-	// GameState / Players 数组
-	std::cout << "GameState:         0x" << std::hex << engine.GameState << std::dec << "\n";
-	std::cout << "baseArray:         0x" << std::hex << engine.baseArray << std::dec << "\n";
-	std::cout << "PlayerCount:         " << engine.PlayerCount << "\n";
-	std::cout << "PlayerCountMax:      " << engine.PlayerCountMax << "\n";
-
-	// Totems / Generators / Hatch
-	std::cout << "--- TotemsCache (" << engine.TotemsCache.size() << ") ---\n";
-	for (size_t i = 0; i < engine.TotemsCache.size(); ++i) { std::cout << "  [" << i << "]: 0x" << std::hex << engine.TotemsCache[i] << std::dec << "\n"; }
-	std::cout << "--- GeneratorCache (" << engine.GeneratorCache.size() << ") ---\n";
-	for (size_t i = 0; i < engine.GeneratorCache.size(); ++i) { std::cout << "  [" << i << "]: 0x" << std::hex << engine.GeneratorCache[i] << std::dec << "\n"; }
-	std::cout << "HatchCache:        0x" << std::hex << engine.HatchCache << std::dec << "\n\n";
-
-	// Players
-	std::cout << "=== Players (" << engine.player.size() << ") ===\n";
-	for (size_t i = 0; i < engine.player.size(); ++i) {
-		const auto& P = engine.player[i];
-		std::cout << "-- Player[" << i << "] --\n";
-		std::cout << "  PlayerData:     0x" << std::hex << P.PlayerData << std::dec << "\n";
-		std::cout << "  name:           " << P.name.c_str() << "\n";
-		std::cout << "  PerkStruct:     0x" << std::hex << P.PerkStruct << std::dec << "\n";
-		std::cout << "  EquipedPerkIds: 0x" << std::hex << P.EquipedPerkIds << std::dec << "\n";
-		std::cout << "  EquipedPerkIdsNum: " << P.EquipedPerkIdsNum << "\n";
-		std::cout << "  Character ptr:  0x" << std::hex << P.Character << std::dec << "\n";
-		std::cout << "  powerId:        " << P.powerId << "\n";
-		std::cout << "  powerName:      " << P.powerName.c_str() << "\n";
-		std::cout << "  color:          " << (P.color == COLOR_RED ? "RED" : "WHITE") << "\n";
-		std::cout << "  Perks (" << P.perks.size() << "):\n";
-		for (size_t j = 0; j < P.perks.size(); ++j) { const auto& info = P.perks[j]; std::cout << "    [" << j << "] idx=" << info.perkNameIdx << " name=\"" << info.perkName.c_str() << "\"\n"; }
-		std::cout << "\n";
-	}
-}
-
 
 
 void overlay::render()
 {
 
-
-
-
-	// 最多尝试 2 次获取游戏基地址
-	//应为之前不卸载驱动所以游戏换PID会导致驱动更换pid重新验证，所以就要重复获取一次，现在可以删除但是我保留了。
 	static int maxAttempts = 2, attempt = 0;
 	while (attempt < maxAttempts) {
-		gameBase = AutoDriver::GetModule<uint64_t>("DeadByDaylight-Win64-Shipping.exe");
+		gameBase =GetModule<uint64_t>("DeadByDaylight-Win64-Shipping.exe");
 		if (gameBase) {
 			printf("第 %d 次尝试，获取游戏基地址 OK!!!\n", attempt + 1);
 			break;  // 获取到就跳出循环
@@ -335,9 +266,7 @@ void overlay::render()
 	bool done = false;
 	while (done == false)
 	{
-		// doing similar logic in wndproc (acting on message) only registers if window is focused
-		// 0x0001 最低位表示按下// 0x8000 最高位表示一直按下
-		// 处理菜单显示开关 (INS键)
+
 		if (GetAsyncKeyState(VK_INSERT) & 1) { overlay::enabled = !overlay::enabled; }
 
 		MSG msg;
@@ -395,9 +324,9 @@ void overlay::render()
 
 				UWorld = AutoDriver::Read<uint64_t>(gameBase + OFFSET_GWorld);
 				if (UWorld) {
-					engine.pLevel = AutoDriver::Read<uint64_t>(UWorld + OFFSET_UWorld_ULevel_PersistentLevel);
+					engine.pLevel =Read<uint64_t>(UWorld + OFFSET_UWorld_ULevel_PersistentLevel);
 					if (engine.pLevel) {
-						engine.actors = AutoDriver::Read<uint64_t>(engine.pLevel + OFFSET_ULevel_Actors);
+						engine.actors =Read<uint64_t>(engine.pLevel + OFFSET_ULevel_Actors);
 						if (engine.actors) {
 							engine.Num = AutoDriver::Read<uint32_t>(engine.pLevel + OFFSET_ULevel_Actors + 0x8);
 							if (engine.Num > 3000) engine.Num = 0;
@@ -461,7 +390,7 @@ void overlay::render()
 				}
 
 				// 遍历房间所有玩家缓存指针
-				engine.player.resize(engine.PlayerCount);		// 用 resize 而不是 reserve
+				engine.player.resize(engine.PlayerCount);
 				for (unsigned int i = 0; i < engine.PlayerCount; ++i) {
 
 					// 先向vector中添加元素
@@ -488,18 +417,13 @@ void overlay::render()
 						engine.player[i].color = COLOR_WHITE;
 					}
 
-					// 读取玩家被动的技能
+		
 					engine.player[i].perks.resize(engine.player[i].EquipedPerkIdsNum);
 					for (uint32_t perk = 0; perk < engine.player[i].EquipedPerkIdsNum; ++perk) {
-
-						//当前玩家的被动技能数组的指针
 						engine.player[i].perks[perk].PerkNameData = engine.player[i].EquipedPerkIds + perk * sizeof(FName);
-						//读取技能名索引
 						engine.player[i].perks[perk].perkNameIdx = AutoDriver::Read<int32_t>(engine.player[i].perks[perk].PerkNameData + 0x8);
-
-						//获取英文名
 						engine.player[i].perks[perk].perkName = GetNameByIndexString(engine.player[i].perks[perk].perkNameIdx, GName);
-						//读取被动技能名并匹配映射表
+				
 						if (auto it = PeiZhiPerkNameMap.find(engine.player[i].perks[perk].perkName); it != PeiZhiPerkNameMap.end())
 						{
 							// 转换宽字符串为UTF-8
