@@ -1,4 +1,4 @@
-# Dead by Daylight External Overlay  |  Language: [English](#READMEEnglish.md)
+# Dead by Daylight External Overlay  |  Language: [Chinese](README.md)
 
 > Kernel-mode physical memory read/write based external overlay
 > **This project does NOT include the kernel driver**—only the external rendering component.
@@ -7,10 +7,7 @@
 
 ## 🔍 Project Overview
 
-Dead by Daylight External Overlay is an external rendering tool for *Dead by Daylight*.
-It uses a custom kernel driver to read and write game physical memory directly, extracting in‑game entity information for on‑screen rendering.
-Rendering is built on the [noahware/external-overlay](https://github.com/noahware/external-overlay) framework.
-For the latest offsets, please refer to [Encryqed/Dumper-7](https://github.com/Encryqed/Dumper-7).
+Dead by Daylight External Overlay is an external rendering tool for *Dead by Daylight*. It uses a custom kernel driver to read and write game physical memory directly, extracting in‑game entity information for on‑screen rendering. Rendering is built on the [noahware/external-overlay](https://github.com/noahware/external-overlay) framework. For the latest offsets, please refer to [Encryqed/Dumper-7](https://github.com/Encryqed/Dumper-7).
 
 ---
 
@@ -39,15 +36,12 @@ For the latest offsets, please refer to [Encryqed/Dumper-7](https://github.com/E
    cd DbD-External-Overlay
    ```
 
-2. **Prepare the kernel driver**
-   *This project provides only the external overlay code, no driver included.*
-   Set up or use your own driver template, ensuring it is properly signed and loaded:
+2. **Prepare the kernel driver** *This project provides only the external overlay code, no driver included.* Set up or use your own driver template, ensuring it is properly signed and loaded:
 
    * Example driver: `YourKernelDriver.sys`
    * Driver API: custom `ReadPhysicalMemory` / `WritePhysicalMemory`
 
-3. **Configure offsets**
-   Keep offsets up to date by downloading and parsing:
+3. **Configure offsets** Keep offsets up to date by downloading and parsing:
 
    ```bash
    git clone https://github.com/Encryqed/Dumper-7.git
