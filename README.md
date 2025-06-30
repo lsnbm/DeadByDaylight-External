@@ -55,15 +55,6 @@ Dead by Daylight External Overlay 是一款针对《黎明杀机》（Dead by Da
    cp Dumper-7/offsets.json config/offsets.json
    ```
 
-4. **编译并运行**
-
-   ```bash
-   mkdir build && cd build
-   cmake ..
-   make -j$(nproc)
-   ./DbD_ExternalOverlay
-   ```
-
 ---
 
 
